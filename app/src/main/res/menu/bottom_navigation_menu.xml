@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/btn_my_wardrobe"
+        android:title="My Wardrobe"
+        android:icon="@drawable/menu_svgrepo_com" />
+    <item android:id="@+id/btn_browse"
+        android:title="Browse"
+        android:icon="@drawable/search_svgrepo_com"/>
+    <item android:id="@+id/btn_shop"
+        android:title="Shop"
+        android:icon="@drawable/baseline_shopping_cart_24"/>
+    <item android:id="@+id/btn_profile"
+        android:title="Profile"
+        android:icon="@drawable/baseline_account_circle_24"/>
+</menu>

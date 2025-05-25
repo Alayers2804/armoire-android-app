@@ -1,14 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.RegisterFragment">
+    android:padding="24dp"
+    tools:context=".ui.authentication.LoginFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_basic_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView_SignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/txt_sign_up"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinput_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="Enter your username"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView_SignUp"
+            app:startIconDrawable="@drawable/baseline_account_circle_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Username Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinput_username"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="Enter your email"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textinput_name"
+            app:startIconDrawable="@drawable/baseline_account_circle_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinput_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="Enter your username"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textinput_username"
+            app:startIconDrawable="@drawable/baseline_all_inbox_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="@string/txt_placeholder_password"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textinput_email"
+            app:startIconDrawable="@drawable/baseline_lock_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Forgot Password -->
+        <TextView
+            android:id="@+id/text_terms"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_register" />
+
+        <!-- Login Button -->
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_register"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/txt_sign_up"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/buttonPrimary"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toTopOf="@id/layout_text_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.85" />
+
+        <LinearLayout
+            android:id="@+id/layout_text_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/sign_up_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_info_has_account"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/sign_in_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/txt_login_btn"
+                android:textColor="@color/textPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/sign_up_prompt"
+                app:layout_constraintStart_toEndOf="@id/sign_up_prompt" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_gender"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/image_female"
+            android:padding="10dp"
+            android:src="@drawable/female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <ImageView
+            android:id="@+id/image_male"
+            android:padding="10dp"
+            android:src="@drawable/male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- Step 3: Aesthetic Selection -->
+    <LinearLayout
+        android:id="@+id/layout_style"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <!-- Styles for Men -->
+        <LinearLayout
+            android:id="@+id/layout_styles_men"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="20dp">
+
+            <TextView android:text="Old Money" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Streetwear" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Softboy" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Starboy" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Minimalism" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Vintage" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- Styles for Women -->
+        <LinearLayout
+            android:id="@+id/layout_styles_women"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="20dp">
+
+            <TextView android:text="Old Money" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Star Girl" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Indie" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Cottagecore" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Scandi" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Downtown" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="ALT" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:text="Y2K" style="@style/StyleItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Sign Up Prompt -->
 
 </FrameLayout>

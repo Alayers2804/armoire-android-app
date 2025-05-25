@@ -5,4 +5,5 @@
     <color name="buttonPrimary">#22223C</color>
     <color name="buttonSecondary">#F2E9E4</color>
     <color name="buttonTertiary">#4F56B3</color>
+    <color name="textPrimary">#5E558E</color>
 </resources>
