@@ -1,7 +1,9 @@
 package com.wardrobe.armoire.ui.authentication
 
 import android.app.Application
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +23,8 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
+    private var viewModel: AuthenticationViewmodel? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,12 +41,15 @@ class LoginFragment : Fragment() {
                 val password = passwordInput.toString()
 
                 viewLifecycleOwner.lifecycleScope.launch {
-//                    val result = login(email, password)
-                        val result = true
-                    if (result){
+                    val result = viewModel?.login(email, password)
+                    if (result == true) {
                         Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(context, "Login Failed!, Please Check your Email/Password", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Login Failed!, Please Check your Email/Password",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -57,15 +64,5 @@ class LoginFragment : Fragment() {
 //        unregisterReceiver()
         _binding = null
     }
-//
-//    private suspend fun login(username: String, password: String): Boolean {
-//        val hashedPassword = HashUtil.hash(password)
-//        val loginResult = userDao.authenticateUser(username, hashedPassword)
-//
-//        if (loginResult != null) {
-//            return true;
-//        } else {
-//            return false
-//        }
-//    }
+
 }

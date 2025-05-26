@@ -2,6 +2,7 @@ package com.wardrobe.armoire.ui.authentication
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,15 +20,15 @@ import com.wardrobe.armoire.model.user.Gender
 import com.wardrobe.armoire.model.user.UserModel
 import com.wardrobe.armoire.utils.HashUtil
 import kotlinx.coroutines.launch
+import java.util.logging.Logger
 
-class RegisterFragment: Fragment() {
+class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
     private lateinit var gender: Gender
-//
-//    private val app = requireActivity().application
-//    private val userDao = AppDatabase.getDatabase(app).userDao()
+
+    private var viewModel: AuthenticationViewmodel? = null
 
     private enum class RegistrationStep {
         BASIC_INFO, GENDER, STYLE
@@ -53,24 +54,38 @@ class RegisterFragment: Fragment() {
 
         with(binding) {
             showStep(currentStep)
-            val name = textinputName.toString()
-            val username = textinputUsername.toString()
-            val email = textinputEmail.toString()
-            val password = passwordInput.toString()
+
+            var name: String
+            var username: String
+            var email: String
+            var password: String
+
             val femaleImage = view.findViewById<ImageView>(R.id.image_female)
             val maleImage = view.findViewById<ImageView>(R.id.image_male)
             val maleStylesLayout = view.findViewById<LinearLayout>(R.id.layout_styles_men)
             val femaleStylesLayout = view.findViewById<LinearLayout>(R.id.layout_styles_women)
 
             btnRegister.setOnClickListener {
+                name = textinputName.editText?.text.toString().trim()
+                username = textinputUsername.editText?.text.toString().trim()
+                email = textinputEmail.editText?.text.toString().trim()
+                password = passwordInput.editText?.text.toString().trim()
                 when (currentStep) {
                     RegistrationStep.BASIC_INFO -> {
                         if (name.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
                             Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT)
                                 .show()
+                            Log.d(
+                                "Checking input",
+                                "this is $name + this is $username + this is $email + this is $password"
+                            )
                         } else {
                             currentStep = RegistrationStep.GENDER
                             showStep(currentStep)
+                            Log.d(
+                                "Checking input",
+                                "this is $name + this is $username + this is $email + this is $password"
+                            )
                         }
                     }
 
@@ -79,29 +94,35 @@ class RegisterFragment: Fragment() {
                             Toast.makeText(context, "Please select a gender", Toast.LENGTH_SHORT)
                                 .show()
                         } else {
+                            Log.d("What is the gender", selectedGender.toString())
                             currentStep = RegistrationStep.STYLE
                             showStep(currentStep)
-                        }
-                    }
 
-                    RegistrationStep.STYLE -> {
-                        when (gender) {
-                            Gender.MAN -> {
+                            if (selectedGender == Gender.MAN) {
                                 maleStylesLayout.visibility = View.VISIBLE
                                 femaleStylesLayout.visibility = View.GONE
                                 setupStyleSelection(maleStylesLayout)
-                            }
-
-                            Gender.WOMAN -> {
+                            } else {
                                 maleStylesLayout.visibility = View.GONE
                                 femaleStylesLayout.visibility = View.VISIBLE
                                 setupStyleSelection(femaleStylesLayout)
                             }
                         }
+                    }
+
+                    RegistrationStep.STYLE -> {
 
                         viewLifecycleOwner.lifecycleScope.launch {
-//                            register(name, username, email, password, selectedGender!!, selectedStyles)
-                            Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT).show()
+                            viewModel?.register(
+                                name,
+                                username,
+                                email,
+                                password,
+                                selectedGender!!,
+                                selectedStyles
+                            )
+                            Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }
@@ -127,34 +148,19 @@ class RegisterFragment: Fragment() {
         _binding = null
     }
 
-//    private suspend fun register(
-//        name: String,
-//        username: String,
-//        email: String,
-//        password: String,
-//        gender: Gender,
-//        style: List<String>?
-//    ) {
-//
-//        val hashedPassword = HashUtil.hash(password)
-//
-//        val userData = UserModel(
-//            name = name,
-//            username = username,
-//            password = hashedPassword,
-//            email = email,
-//            gender = gender.toString(),
-//            style = style
-//        )
-//
-//        userDao.registerUser(userData)
-//    }
 
     private fun showStep(step: RegistrationStep) {
         binding.layoutBasicInfo.visibility =
             if (step == RegistrationStep.BASIC_INFO) View.VISIBLE else View.GONE
+
+        binding.layoutTextInfo.visibility =
+            if (step == RegistrationStep.BASIC_INFO) View.VISIBLE else View.GONE
+        binding.btnRegister.text =
+            if (step == RegistrationStep.STYLE) "Sign up" else "Next"
+
         binding.layoutGender.visibility =
             if (step == RegistrationStep.GENDER) View.VISIBLE else View.GONE
+
         binding.layoutStyle.visibility =
             if (step == RegistrationStep.STYLE) View.VISIBLE else View.GONE
     }
