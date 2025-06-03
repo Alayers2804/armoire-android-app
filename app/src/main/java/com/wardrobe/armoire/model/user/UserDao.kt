@@ -12,13 +12,13 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun registerUser(user: UserModel)
 
-    @Query("SELECT * FROM user_master_data WHERE username = :username AND password = :password LIMIT 1")
+    @Query("SELECT * FROM users WHERE username = :username AND password = :password LIMIT 1")
     suspend fun authenticateUser(username: String, password: String): UserModel?
 
-    @Query("SELECT * FROM user_master_data WHERE username = :username LIMIT 1")
+    @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
     suspend fun getUserByUsername(username: String): UserModel?
 
-    @Query("SELECT * FROM user_master_data WHERE uid = :uid LIMIT 1")
+    @Query("SELECT * FROM users WHERE uid = :uid LIMIT 1")
     suspend fun getUserById(uid: String): UserModel?
 
     @Delete

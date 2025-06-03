@@ -113,16 +113,33 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/text_terms"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
+            android:layout_marginTop="15dp"
+            android:layoutDirection="inherit"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_input"/>
+            app:layout_constraintTop_toBottomOf="@id/password_input">
+
+            <CheckBox
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="15dp" />
+
+            <TextView
+                android:id="@+id/text_terms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I agree to the Terms of Service and Privacy Policy"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/password_input" />
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -134,23 +151,49 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone">
-        <ImageView
-            android:id="@+id/image_female"
-            android:padding="10dp"
-            android:src="@drawable/female"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true" />
 
-        <ImageView
-            android:id="@+id/image_male"
-            android:padding="10dp"
-            android:src="@drawable/male"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true" />
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                android:src="@drawable/female" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Woman" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/image_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                android:src="@drawable/male" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Man" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
@@ -161,34 +204,69 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
         <!-- Styles for Men -->
         <LinearLayout
             android:id="@+id/layout_styles_men"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_marginTop="20dp">
+            android:visibility="gone">
 
-            <TextView android:text="Old Money" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Streetwear" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Softboy" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Starboy" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Minimalism" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Vintage" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp">
+
+                <ImageView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/old_money_man"
+                    android:tag="Old Money"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/streetwear_man"
+                    android:tag="Streetwear"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/softboy_man"
+                    android:tag="Softboy"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/starboy_man"
+                    android:tag="Starboy"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/minimalism_man"
+                    android:tag="Minimalism"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/vintage_man"
+                    android:tag="Vintage"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <!-- Styles for Women -->
@@ -196,34 +274,79 @@
             android:id="@+id/layout_styles_women"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="35dp"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_marginTop="20dp">
+            android:gravity="center"
+            android:visibility="visible">
 
-            <TextView android:text="Old Money" style="@style/StyleItem"
+            <LinearLayout
+                android:gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Star Girl" style="@style/StyleItem"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/old_money_woman"
+                    android:tag="Old Money"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/star_girl_woman"
+                    android:tag="Stargirl"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/indie_woman"
+                    android:tag="Indie"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Indie" style="@style/StyleItem"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/cottagecore_woman"
+                    android:tag="Cottagecore"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/scandi_woman"
+                    android:tag="Scandi"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/downtown_woman"
+                    android:tag="Downtown"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Cottagecore" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Scandi" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Downtown" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="ALT" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView android:text="Y2K" style="@style/StyleItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/alt_woman"
+                    android:tag="Alt"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/y2k_woman"
+                    android:tag="Y2K"/>
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </LinearLayout>
@@ -278,7 +401,6 @@
             app:layout_constraintBottom_toBottomOf="@id/sign_up_prompt"
             app:layout_constraintStart_toEndOf="@id/sign_up_prompt" />
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

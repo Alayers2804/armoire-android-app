@@ -6,9 +6,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.UUID
 
-@Entity(tableName = "wardrobe_master_data")
+@Entity(tableName = "wardrobe_clothes")
 data class WardrobeModel(
-    @PrimaryKey(autoGenerate = true) var uuid: UUID,
+    @PrimaryKey
+    val uid: String = UUID.randomUUID().toString(),
     var path: String,
     var description : String,
 

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -15,6 +16,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "OPENAI_API_KEY",
+            "\"${property("OPENAI_API_KEY")}\""
+        )
     }
 
     buildTypes {
@@ -26,6 +33,10 @@ android {
             )
         }
     }
+
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -36,6 +47,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     buildToolsVersion = "35.0.1"
 }
@@ -52,6 +64,12 @@ dependencies {
     implementation(libs.androidx.navigation.dynamic.features.fragment)
     implementation(libs.androidx.room.ktx)
     implementation(libs.gson)
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("io.jsonwebtoken:jjwt:0.12.6")
+    ksp("androidx.room:room-compiler:2.7.1")
+    implementation("com.google.devtools.ksp:symbol-processing-api:2.1.21-2.0.1")
+    implementation(libs.aallam.openai.client)
+    implementation(libs.okhttp3.logging.interceptor)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -26,14 +26,12 @@ class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var gender: Gender
 
     private var viewModel: AuthenticationViewmodel? = null
 
     private enum class RegistrationStep {
         BASIC_INFO, GENDER, STYLE
     }
-
 
     private var currentStep = RegistrationStep.BASIC_INFO
 
@@ -75,17 +73,9 @@ class RegisterFragment : Fragment() {
                         if (name.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
                             Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT)
                                 .show()
-                            Log.d(
-                                "Checking input",
-                                "this is $name + this is $username + this is $email + this is $password"
-                            )
                         } else {
                             currentStep = RegistrationStep.GENDER
                             showStep(currentStep)
-                            Log.d(
-                                "Checking input",
-                                "this is $name + this is $username + this is $email + this is $password"
-                            )
                         }
                     }
 
@@ -123,6 +113,7 @@ class RegisterFragment : Fragment() {
                             )
                             Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT)
                                 .show()
+                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                         }
                     }
                 }
@@ -140,6 +131,9 @@ class RegisterFragment : Fragment() {
                 selectedGender = Gender.MAN
                 highlightSelectedGender(maleImage, femaleImage)
             }
+
+            setupStyleSelection(binding.layoutStylesMen)
+            setupStyleSelection(binding.layoutStylesWomen)
         }
     }
 
@@ -176,20 +170,25 @@ class RegisterFragment : Fragment() {
 
     private fun setupStyleSelection(styleLayout: LinearLayout) {
         for (i in 0 until styleLayout.childCount) {
-            val textView = styleLayout.getChildAt(i) as? TextView ?: continue
-            textView.setOnClickListener {
-                val style = textView.text.toString()
-                if (selectedStyles.contains(style)) {
-                    selectedStyles.remove(style)
-                    textView.setBackgroundResource(0)
-                    textView.setTypeface(null, Typeface.NORMAL)
-                } else {
-                    selectedStyles.add(style)
-                    textView.setBackgroundResource(R.drawable.selection_border) // optional
-                    textView.setTypeface(null, Typeface.BOLD)
+            val child = styleLayout.getChildAt(i)
+
+            if (child is LinearLayout) {
+                setupStyleSelection(child)
+            } else if (child is ImageView) {
+                val style = child.tag?.toString() ?: continue
+
+                child.setOnClickListener {
+                    if (selectedStyles.contains(style)) {
+                        selectedStyles.remove(style)
+                        child.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
+                        child.setBackgroundResource(0)
+                    } else {
+                        selectedStyles.add(style)
+                        child.animate().scaleX(1.1f).scaleY(1.1f).setDuration(150).start()
+                        child.setBackgroundResource(R.drawable.selection_border)
+                    }
                 }
             }
         }
     }
-
 }

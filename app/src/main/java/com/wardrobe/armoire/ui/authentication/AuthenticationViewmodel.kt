@@ -2,15 +2,26 @@ package com.wardrobe.armoire.ui.authentication
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.wardrobe.armoire.AppDatabase
 import com.wardrobe.armoire.model.user.Gender
 import com.wardrobe.armoire.model.user.UserDao
 import com.wardrobe.armoire.model.user.UserModel
+import com.wardrobe.armoire.utils.GenerateTokenUtil
 import com.wardrobe.armoire.utils.HashUtil
+import com.wardrobe.armoire.utils.Preferences
+import com.wardrobe.armoire.utils.UserPreferences
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.util.Date
 
-class AuthenticationViewmodel(application: Application) : AndroidViewModel(application) {
+class AuthenticationViewmodel(application: Application, private val pref: Preferences) :
+    AndroidViewModel(application) {
 
     private val userDao = AppDatabase.getDatabase(application).userDao()
+    private val currentTime = Date(System.currentTimeMillis())
 
     suspend fun register(
         name: String,
@@ -38,7 +49,33 @@ class AuthenticationViewmodel(application: Application) : AndroidViewModel(appli
     suspend fun login(username: String, password: String): Boolean {
         val hashedPassword = HashUtil.hash(password)
         val loginResult = userDao.authenticateUser(username, hashedPassword)
-
+        if (loginResult != null) {
+            val token = GenerateTokenUtil.generateToken(username, currentTime)
+            setUserPreferences(token, username)
+        }
         return loginResult != null
+    }
+
+    fun getUserPreference(property: UserPreferences): LiveData<String> {
+        return when (property) {
+            UserPreferences.User_Token -> pref.getUserToken().asLiveData()
+            UserPreferences.Username -> pref.getUserName().asLiveData()
+        }
+    }
+
+    fun setUserPreferences(
+        userToken: String,
+        userName: String,
+
+        ) {
+        viewModelScope.launch {
+            pref.saveLoginSession(userToken, userName)
+        }
+    }
+
+    fun clearUserPreferences() {
+        viewModelScope.launch {
+            pref.clearLoginSession()
+        }
     }
 }

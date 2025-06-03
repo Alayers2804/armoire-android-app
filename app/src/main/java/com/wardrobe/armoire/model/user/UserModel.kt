@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 import java.util.ArrayList
 import java.util.UUID
 
-@Entity(tableName = "user_master_data")
-
+@Entity(tableName = "users")
 data class UserModel(
-    @PrimaryKey(autoGenerate = true) val uid: String = UUID.randomUUID().toString(),
+    @PrimaryKey
+    val uid: String = UUID.randomUUID().toString(),
     var name: String,
     var username: String,
     var password: String,
