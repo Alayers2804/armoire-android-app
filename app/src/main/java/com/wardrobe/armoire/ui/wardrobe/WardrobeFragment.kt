@@ -63,16 +63,10 @@ class WardrobeFragment : Fragment() {
         fun updateCombinedCategories() {
             val combined = mutableListOf<WardrobeCategory>()
 
-            val wardrobeItems =
-                wardrobeViewmodel.wardrobeMyitems.value?.map { CategoryItem.Wardrobe(it) }
-                    ?: emptyList()
-            val wardrobeSaved =
-                wardrobeViewmodel.wardrobeMyPreloved.value?.map { CategoryItem.Wardrobe(it) }
-                    ?: emptyList()
-            val outfitItems = outfitViewmodel.outfitMyOutfits.value?.map { CategoryItem.Outfit(it) }
-                ?: emptyList()
-            val outfitSaved =
-                outfitViewmodel.outfitMySaved.value?.map { CategoryItem.Outfit(it) } ?: emptyList()
+            val wardrobeItems = wardrobeViewmodel.wardrobeMyitems.value?.map { CategoryItem.Wardrobe(it) } ?: emptyList()
+            val wardrobeSaved = wardrobeViewmodel.wardrobeMyPreloved.value?.map { CategoryItem.Wardrobe(it) } ?: emptyList()
+            val outfitItems = outfitViewmodel.outfitMyOutfits.value?.map { CategoryItem.Outfit(it) } ?: emptyList()
+            val outfitSaved = outfitViewmodel.outfitMySaved.value?.map { CategoryItem.Outfit(it) } ?: emptyList()
 
             combined.add(WardrobeCategory("My Wardrobe", wardrobeItems))
             combined.add(WardrobeCategory("My Saved Wardrobe", wardrobeSaved))

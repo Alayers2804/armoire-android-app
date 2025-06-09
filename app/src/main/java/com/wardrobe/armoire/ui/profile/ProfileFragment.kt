@@ -2,20 +2,27 @@ package com.wardrobe.armoire.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.wardrobe.armoire.BaseViewModelFactory
+import com.wardrobe.armoire.MainActivity
 import com.wardrobe.armoire.R
+import com.wardrobe.armoire.databinding.FragmentLoginBinding
 import com.wardrobe.armoire.databinding.FragmentProfileBinding
 import com.wardrobe.armoire.ui.authentication.AuthenticationActivity
 import com.wardrobe.armoire.ui.authentication.AuthenticationViewmodel
+import com.wardrobe.armoire.utils.DecodeToken
 import com.wardrobe.armoire.utils.Preferences
 import com.wardrobe.armoire.utils.UserPreferences
 import com.wardrobe.armoire.utils.dataStore
+import kotlinx.coroutines.launch
 
 
 class ProfileFragment : Fragment() {
@@ -40,20 +47,17 @@ class ProfileFragment : Fragment() {
         val factory = BaseViewModelFactory {
             AuthenticationViewmodel(requireActivity().application, preferences)
         }
-        val authenticationViewModel =
-            ViewModelProvider(this, factory)[AuthenticationViewmodel::class.java]
+        val authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewmodel::class.java]
 
         this.viewModel = authenticationViewModel
 
         with(binding) {
-            viewModel.getUserPreference(UserPreferences.Username)
-                .observe(viewLifecycleOwner) { username ->
-                    txtUsernameProfile.text = username
-                }
+            viewModel.getUserPreference(UserPreferences.Username).observe(viewLifecycleOwner) { username ->
+                txtUsernameProfile.text = username
+            }
 
-            viewModel.getUserPreference(UserPreferences.Email)
-                .observe(viewLifecycleOwner) { email ->
-                    txtEmailProfile.text = email
+            viewModel.getUserPreference(UserPreferences.Email).observe(viewLifecycleOwner) { email ->
+                txtEmailProfile.text = email
             }
 
             binding.subscriptionPlan.setOnClickListener {

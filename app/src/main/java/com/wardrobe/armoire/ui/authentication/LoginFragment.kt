@@ -6,17 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.datastore.dataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.fragment.findNavController
 import com.wardrobe.armoire.BaseViewModelFactory
 import com.wardrobe.armoire.MainActivity
 import com.wardrobe.armoire.R
 import com.wardrobe.armoire.databinding.FragmentLoginBinding
 import com.wardrobe.armoire.utils.Preferences
+import com.wardrobe.armoire.utils.UserPreferences
 import com.wardrobe.armoire.utils.dataStore
 import kotlinx.coroutines.launch
+import kotlin.let
 
 
 class LoginFragment : Fragment() {
@@ -41,8 +45,7 @@ class LoginFragment : Fragment() {
         val factory = BaseViewModelFactory {
             AuthenticationViewmodel(requireActivity().application, preferences)
         }
-        val authenticationViewModel =
-            ViewModelProvider(this, factory)[AuthenticationViewmodel::class.java]
+        val authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewmodel::class.java]
 
         this.viewModel = authenticationViewModel
 

@@ -19,14 +19,14 @@ class SubscriptionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSubscriptionBinding.inflate(inflater, container, false)
+        _binding = FragmentSubscriptionBinding.inflate(inflater,container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
+        with(binding){
             backButton.setOnClickListener {
                 findNavController().popBackStack()
             }

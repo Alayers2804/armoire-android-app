@@ -14,7 +14,7 @@ import com.wardrobe.armoire.model.wardrobe.WardrobeModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WardrobeViewmodel(application: Application) : AndroidViewModel(application) {
+class WardrobeViewmodel(application: Application): AndroidViewModel(application) {
 
     private val _wardrobeMyItems = MutableLiveData<List<WardrobeModel>>()
     val wardrobeMyitems: LiveData<List<WardrobeModel>> = _wardrobeMyItems

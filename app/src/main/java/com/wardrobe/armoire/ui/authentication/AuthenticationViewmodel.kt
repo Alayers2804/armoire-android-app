@@ -1,18 +1,21 @@
 package com.wardrobe.armoire.ui.authentication
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.wardrobe.armoire.AppDatabase
 import com.wardrobe.armoire.model.user.Gender
+import com.wardrobe.armoire.model.user.UserDao
 import com.wardrobe.armoire.model.user.UserModel
 import com.wardrobe.armoire.utils.GenerateTokenUtil
 import com.wardrobe.armoire.utils.HashUtil
 import com.wardrobe.armoire.utils.Preferences
 import com.wardrobe.armoire.utils.UserPreferences
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.util.Date
 
 class AuthenticationViewmodel(application: Application, private val pref: Preferences) :

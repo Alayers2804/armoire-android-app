@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/browse_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/browse_root"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Search Bar Container -->
     <LinearLayout
         android:id="@+id/search_bar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/search_background_xml"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:background="@drawable/search_background_xml"
+        android:padding="8dp"
+        android:gravity="center_vertical">
 
         <!-- Back/Clear Button -->
         <ImageButton
@@ -21,8 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Back"
             android:src="@drawable/button"
+            android:contentDescription="Back"
             android:visibility="gone" />
 
         <!-- Search Input -->
@@ -32,17 +33,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Search..."
-            android:imeOptions="actionSearch"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:imeOptions="actionSearch" />
     </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="18sp"
         android:layout_marginTop="15dp"
         android:text="Search Suggestions"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_results"

@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wardrobe.armoire.AppDatabase
 import com.wardrobe.armoire.model.outfit.OutfitModel
+import com.wardrobe.armoire.model.wardrobe.CategoryItem
+import com.wardrobe.armoire.model.wardrobe.WardrobeCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

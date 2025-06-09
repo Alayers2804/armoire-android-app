@@ -57,8 +57,7 @@ class RegisterFragment : Fragment() {
         val factory = BaseViewModelFactory {
             AuthenticationViewmodel(requireActivity().application, preferences)
         }
-        val authenticationViewModel =
-            ViewModelProvider(this, factory)[AuthenticationViewmodel::class.java]
+        val authenticationViewModel = ViewModelProvider(this, factory)[AuthenticationViewmodel::class.java]
 
         this.viewModel = authenticationViewModel
 
@@ -125,15 +124,8 @@ class RegisterFragment : Fragment() {
                                     selectedGender!!,
                                     selectedStyles
                                 )
-                                Log.d(
-                                    "Data Saved",
-                                    "Data saved successfully : $name, $username, $email, $password, $selectedGender, $selectedStyles"
-                                )
-                                Toast.makeText(
-                                    context,
-                                    "Registration successful!",
-                                    Toast.LENGTH_SHORT
-                                )
+                                Log.d("Data Saved", "Data saved successfully : $name, $username, $email, $password, $selectedGender, $selectedStyles")
+                                Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT)
                                     .show()
                                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                             }

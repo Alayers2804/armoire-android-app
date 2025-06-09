@@ -8,6 +8,6 @@ data class WardrobeCategory(
 )
 
 sealed class CategoryItem {
-    data class Wardrobe(val data: WardrobeModel) : CategoryItem()
-    data class Outfit(val data: OutfitModel) : CategoryItem()
+    data class Wardrobe(val data: WardrobeModel): CategoryItem()
+    data class Outfit(val data: OutfitModel): CategoryItem()
 }

@@ -1,12 +1,12 @@
 package com.wardrobe.armoire.ui.wardrobe
 
+import com.wardrobe.armoire.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.wardrobe.armoire.R
 import com.wardrobe.armoire.model.wardrobe.CategoryItem
 import com.wardrobe.armoire.model.wardrobe.WardrobeCategory
 import com.wardrobe.armoire.ui.outfit.OutfitAdapter

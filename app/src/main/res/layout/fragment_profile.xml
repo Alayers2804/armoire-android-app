@@ -19,11 +19,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:layout_marginTop="10dp"
+        app:cardBackgroundColor="@color/buttonPrimary"
         android:id="@+id/first_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/buttonPrimary"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_profile">
 
@@ -57,10 +57,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/second_card"
-        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="@color/buttonSubscription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/buttonSubscription"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/first_card">
 
@@ -72,29 +72,29 @@
             android:padding="20dp">
 
             <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <ImageView
+                    android:src="@drawable/baseline_account_circle_24"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/baseline_account_circle_24" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/txt_username_profile"
+                    android:layout_marginStart="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
                     android:text="Placeholder_username"
                     android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -103,9 +103,9 @@
 
                 <TextView
                     android:id="@+id/txt_email_profile"
+                    android:layout_marginStart="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
                     android:text="Placeholder_email"
                     android:textColor="@color/black" />
             </LinearLayout>
@@ -131,8 +131,8 @@
 
             <LinearLayout
                 android:id="@+id/subscription_plan"
-                android:orientation="horizontal"
                 android:padding="10dp"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:ignore="UseCompoundDrawables">
@@ -143,22 +143,22 @@
                     android:src="@drawable/subs_plan" />
 
                 <TextView
+                    android:gravity="fill|center"
                     android:id="@+id/txt_subscription_plan"
                     android:layout_width="match_parent"
                     android:layout_height="31dp"
                     android:layout_marginStart="15dp"
-                    android:gravity="fill|center"
                     android:text="Subscription Plan"
                     android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/your_order"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:padding="10dp"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -166,22 +166,22 @@
                     android:src="@drawable/your_order" />
 
                 <TextView
+                    android:gravity="fill|center"
                     android:id="@+id/txt_your_order"
+                    android:layout_marginStart="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="15dp"
-                    android:gravity="fill|center"
                     android:text="Your Order"
                     android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/incoming_order"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:padding="10dp"
                 android:orientation="horizontal"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:padding="10dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -189,11 +189,11 @@
                     android:src="@drawable/incoming_order" />
 
                 <TextView
+                    android:gravity="fill|center"
                     android:id="@+id/txt_incoming_order"
                     android:layout_width="match_parent"
                     android:layout_height="31dp"
                     android:layout_marginStart="15dp"
-                    android:gravity="fill|center"
                     android:text="Incoming Order"
                     android:textColor="@color/black" />
             </LinearLayout>

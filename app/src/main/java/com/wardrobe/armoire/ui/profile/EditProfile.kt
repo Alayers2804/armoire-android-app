@@ -1,10 +1,10 @@
 package com.wardrobe.armoire.ui.profile
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.wardrobe.armoire.R
 import com.wardrobe.armoire.databinding.FragmentLoginBinding
 import com.wardrobe.armoire.ui.authentication.AuthenticationViewmodel
