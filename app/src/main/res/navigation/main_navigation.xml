@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/main_navigation">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/wardrobeFragment">
 
+    <fragment
+        android:id="@+id/browseFragment"
+        android:name="com.wardrobe.armoire.ui.browse.BrowseFragment"
+        android:label="fragment_browse"
+        tools:layout="@layout/fragment_browse" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.wardrobe.armoire.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_editProfile"
+            app:destination="@id/editProfile" />
+        <action
+            android:id="@+id/action_profileFragment_to_subscriptionFragment"
+            app:destination="@id/subscriptionFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_orderFragment"
+            app:destination="@id/orderFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_yourOrderFragment"
+            app:destination="@id/yourOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/subscriptionFragment"
+        android:name="com.wardrobe.armoire.ui.profile.SubscriptionFragment"
+        android:label="fragment_subscription"
+        tools:layout="@layout/fragment_subscription" />
+    <fragment
+        android:id="@+id/editProfile"
+        android:name="com.wardrobe.armoire.ui.profile.EditProfile"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/wardrobeFragment"
+        android:name="com.wardrobe.armoire.ui.wardrobe.WardrobeFragment"
+        android:label="fragment_wardrobe"
+        tools:layout="@layout/fragment_wardrobe" />
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.wardrobe.armoire.ui.profile.OrderFragment"
+        android:label="fragment_order"
+        tools:layout="@layout/fragment_order" />
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="com.wardrobe.armoire.ui.shop.ShopFragment"
+        android:label="fragment_shop"
+        tools:layout="@layout/fragment_shop" />
+    <fragment
+        android:id="@+id/yourOrderFragment"
+        android:name="com.wardrobe.armoire.ui.profile.YourOrderFragment"
+        android:label="fragment_your_order"
+        tools:layout="@layout/fragment_your_order" />
 </navigation>

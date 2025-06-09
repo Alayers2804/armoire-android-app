@@ -11,14 +11,18 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.wardrobe.armoire.AppDatabase
+import com.wardrobe.armoire.BaseViewModelFactory
 import com.wardrobe.armoire.R
 import com.wardrobe.armoire.databinding.FragmentRegisterBinding
 import com.wardrobe.armoire.model.user.Gender
 import com.wardrobe.armoire.model.user.UserModel
 import com.wardrobe.armoire.utils.HashUtil
+import com.wardrobe.armoire.utils.Preferences
+import com.wardrobe.armoire.utils.dataStore
 import kotlinx.coroutines.launch
 import java.util.logging.Logger
 
@@ -47,6 +51,16 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val preferences = Preferences.getInstance(requireContext().dataStore)
+
+        val factory = BaseViewModelFactory {
+            AuthenticationViewmodel(requireActivity().application, preferences)
+        }
+        val authenticationViewModel =
+            ViewModelProvider(this, factory)[AuthenticationViewmodel::class.java]
+
+        this.viewModel = authenticationViewModel
 
         var selectedGender: Gender? = null
 
@@ -101,20 +115,32 @@ class RegisterFragment : Fragment() {
                     }
 
                     RegistrationStep.STYLE -> {
-
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            viewModel?.register(
-                                name,
-                                username,
-                                email,
-                                password,
-                                selectedGender!!,
-                                selectedStyles
-                            )
-                            Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT)
-                                .show()
-                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                        try {
+                            viewLifecycleOwner.lifecycleScope.launch {
+                                viewModel?.register(
+                                    name,
+                                    username,
+                                    email,
+                                    password,
+                                    selectedGender!!,
+                                    selectedStyles
+                                )
+                                Log.d(
+                                    "Data Saved",
+                                    "Data saved successfully : $name, $username, $email, $password, $selectedGender, $selectedStyles"
+                                )
+                                Toast.makeText(
+                                    context,
+                                    "Registration successful!",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                            }
+                        } catch (e: Exception) {
+                            Log.e("Error inputting data", e.toString())
                         }
+
                     }
                 }
             }
@@ -149,11 +175,18 @@ class RegisterFragment : Fragment() {
 
         binding.layoutTextInfo.visibility =
             if (step == RegistrationStep.BASIC_INFO) View.VISIBLE else View.GONE
+
         binding.btnRegister.text =
             if (step == RegistrationStep.STYLE) "Sign up" else "Next"
 
         binding.layoutGender.visibility =
             if (step == RegistrationStep.GENDER) View.VISIBLE else View.GONE
+
+        binding.textViewSignUp.text =
+            if (step == RegistrationStep.GENDER) "Select your gender" else if (step == RegistrationStep.STYLE) "Select Your Aesthetic(s)" else "Sign up"
+
+        binding.textViewAestethics.visibility =
+            if (step == RegistrationStep.STYLE) View.VISIBLE else View.GONE
 
         binding.layoutStyle.visibility =
             if (step == RegistrationStep.STYLE) View.VISIBLE else View.GONE

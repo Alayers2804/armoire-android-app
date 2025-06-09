@@ -7,14 +7,12 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.wardrobe.armoire.AppDatabase
 import com.wardrobe.armoire.model.user.Gender
-import com.wardrobe.armoire.model.user.UserDao
 import com.wardrobe.armoire.model.user.UserModel
 import com.wardrobe.armoire.utils.GenerateTokenUtil
 import com.wardrobe.armoire.utils.HashUtil
 import com.wardrobe.armoire.utils.Preferences
 import com.wardrobe.armoire.utils.UserPreferences
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import java.util.Date
 
 class AuthenticationViewmodel(application: Application, private val pref: Preferences) :
@@ -49,9 +47,10 @@ class AuthenticationViewmodel(application: Application, private val pref: Prefer
     suspend fun login(username: String, password: String): Boolean {
         val hashedPassword = HashUtil.hash(password)
         val loginResult = userDao.authenticateUser(username, hashedPassword)
+        val email = loginResult?.email
         if (loginResult != null) {
             val token = GenerateTokenUtil.generateToken(username, currentTime)
-            setUserPreferences(token, username)
+            setUserPreferences(token, username, email.toString())
         }
         return loginResult != null
     }
@@ -60,16 +59,17 @@ class AuthenticationViewmodel(application: Application, private val pref: Prefer
         return when (property) {
             UserPreferences.User_Token -> pref.getUserToken().asLiveData()
             UserPreferences.Username -> pref.getUserName().asLiveData()
+            UserPreferences.Email -> pref.getEmail().asLiveData()
         }
     }
 
     fun setUserPreferences(
         userToken: String,
         userName: String,
-
+        email: String
         ) {
         viewModelScope.launch {
-            pref.saveLoginSession(userToken, userName)
+            pref.saveLoginSession(userToken, userName, email)
         }
     }
 

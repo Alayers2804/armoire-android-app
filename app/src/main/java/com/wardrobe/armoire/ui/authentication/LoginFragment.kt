@@ -7,11 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.wardrobe.armoire.BaseViewModelFactory
 import com.wardrobe.armoire.MainActivity
 import com.wardrobe.armoire.R
 import com.wardrobe.armoire.databinding.FragmentLoginBinding
+import com.wardrobe.armoire.utils.Preferences
+import com.wardrobe.armoire.utils.dataStore
 import kotlinx.coroutines.launch
 
 
@@ -19,7 +23,7 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private var viewModel: AuthenticationViewmodel? = null
+    private lateinit var viewModel: AuthenticationViewmodel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,17 +35,27 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val preferences = Preferences.getInstance(requireContext().dataStore)
+
+        val factory = BaseViewModelFactory {
+            AuthenticationViewmodel(requireActivity().application, preferences)
+        }
+        val authenticationViewModel =
+            ViewModelProvider(this, factory)[AuthenticationViewmodel::class.java]
+
+        this.viewModel = authenticationViewModel
+
         with(binding) {
             btnLogin.setOnClickListener {
-                val email = textinputUsername.toString()
-                val password = passwordInput.toString()
+                val email = textinputUsername.editText?.text.toString()
+                val password = passwordInput.editText?.text.toString()
 
                 viewLifecycleOwner.lifecycleScope.launch {
-                    val result = viewModel?.login(email, password)
+                    val result = viewModel.login(email.trim(), password.trim())
                     if (result == true) {
                         Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show()
-                        val intent: Intent = Intent(context, MainActivity::class.java)
-                        startActivity(intent)
+                        startActivity(Intent(context, MainActivity::class.java))
                     } else {
                         Toast.makeText(
                             context,

@@ -7,23 +7,40 @@
     android:padding="24dp"
     tools:context=".ui.authentication.LoginFragment">
 
+    <TextView
+        android:id="@+id/textView_SignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_sign_up"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView_aestethics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(select up to 3 aesthetics)"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_SignUp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_basic_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_aestethics">
 
-        <TextView
-            android:id="@+id/textView_SignUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/txt_sign_up"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textinput_name"
@@ -38,7 +55,7 @@
             app:boxCornerRadiusTopStart="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView_SignUp"
+            app:layout_constraintBottom_toTopOf="@id/textinput_username"
             app:startIconDrawable="@drawable/baseline_account_circle_24">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -142,6 +159,7 @@
         </LinearLayout>
 
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -150,7 +168,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="4dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -169,7 +188,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Woman" />
+                android:layout_gravity="center"
+                android:text="Woman"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -190,12 +211,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Man" />
+                android:layout_gravity="center"
+                android:text="Man"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
 
     </LinearLayout>
+
 
     <!-- Step 3: Aesthetic Selection -->
     <LinearLayout
@@ -204,7 +228,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
         <!-- Styles for Men -->
         <LinearLayout
             android:id="@+id/layout_styles_men"
@@ -277,7 +301,7 @@
             android:layout_marginBottom="35dp"
             android:orientation="vertical"
             android:gravity="center"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:gravity="center"

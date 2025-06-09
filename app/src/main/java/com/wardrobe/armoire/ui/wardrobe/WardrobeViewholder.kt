@@ -14,8 +14,19 @@ class WardrobeViewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val txtWardrobe: TextView = itemView.findViewById(R.id.txt_wardrobe)
 
     fun bind(item: WardrobeModel, onClick: (String) -> Unit) {
-        imageWardrobe.setImageResource(0)
-        txtWardrobe.text = item.description
+        val context = itemView.context
+
+        val imageResId = context.resources.getIdentifier(
+            item.path, "drawable", context.packageName
+        )
+
+        if (imageResId != 0) {
+            imageWardrobe.setImageResource(imageResId)
+        } else {
+            imageWardrobe.setImageResource(R.drawable.search_svgrepo_com) // fallback
+        }
+
+        txtWardrobe.text = ""
         itemView.setOnClickListener {
             onClick(item.description ?: "")
         }

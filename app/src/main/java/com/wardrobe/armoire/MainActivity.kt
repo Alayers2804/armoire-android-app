@@ -1,6 +1,5 @@
 package com.wardrobe.armoire
 
-import android.content.BroadcastReceiver
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +24,38 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
+        navController = navHostFragment.navController
+
+        binding.menuNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.btn_my_wardrobe -> {
+                    if (navController.currentDestination?.id != R.id.wardrobeFragment) {
+                        navController.navigate(R.id.wardrobeFragment)
+                    }
+                    true
+                }
+
+                R.id.btn_browse -> {
+                    navController.navigate(R.id.browseFragment)
+                    true
+                }
+
+                R.id.btn_shop -> {
+                    navController.navigate(R.id.shopFragment)
+                    true
+                }
+
+                R.id.btn_profile -> {
+                    navController.navigate(R.id.profileFragment)
+                    true
+                }
+
+                else -> false
+            }
         }
 
     }

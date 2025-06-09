@@ -13,6 +13,11 @@ class WardrobeAdapter(private var dataList : List<WardrobeModel>, private var on
         return  WardrobeViewholder(view)
     }
 
+    fun updateData(newList: List<WardrobeModel>) {
+        dataList = newList
+        notifyDataSetChanged()  // Refresh the whole list
+    }
+
     override fun getItemCount(): Int {
         return dataList.size
     }

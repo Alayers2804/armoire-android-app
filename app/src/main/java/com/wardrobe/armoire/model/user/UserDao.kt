@@ -12,8 +12,15 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun registerUser(user: UserModel)
 
-    @Query("SELECT * FROM users WHERE username = :username AND password = :password LIMIT 1")
-    suspend fun authenticateUser(username: String, password: String): UserModel?
+    @Query(
+        """
+    SELECT * FROM users
+    WHERE (username = :identifier OR email = :identifier)
+    AND password = :password
+    LIMIT 1
+"""
+    )
+    suspend fun authenticateUser(identifier: String, password: String): UserModel?
 
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
     suspend fun getUserByUsername(username: String): UserModel?

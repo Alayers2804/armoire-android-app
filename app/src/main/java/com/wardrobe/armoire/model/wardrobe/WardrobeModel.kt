@@ -12,10 +12,12 @@ data class WardrobeModel(
     val uid: String = UUID.randomUUID().toString(),
     var path: String,
     var description : String,
+    var status: String,
 
     ) : Parcelable{
     constructor(parcel: Parcel) : this(
-        TODO("uuid"),
+        parcel.readString().toString(),
+        parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString()
     )
