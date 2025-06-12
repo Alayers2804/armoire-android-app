@@ -1,0 +1,67 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardBackgroundColor="#F7F0ED">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/img_wardrobe"
+            android:layout_width="120dp"
+            android:layout_height="140dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/app_name"
+            tools:src="@drawable/white_prilly_dress_woman" />
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="White Dress"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#1B0C4D" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/txt_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Rp95.000"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#E2441D" />
+
+            <Button
+                android:id="@+id/btn_view_details"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:paddingHorizontal="12dp"
+                android:text="View Details"
+                android:textSize="12sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#1B0C4D"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/rounded_button_dark" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

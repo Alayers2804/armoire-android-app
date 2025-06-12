@@ -16,9 +16,13 @@ const val preferenceDefaultValue = "Not Set"
 
 class Preferences private constructor(private val dataStore: DataStore<Preferences>) {
 
+    private val uid = stringPreferencesKey(UserPreferences.Uid.name)
     private val token = stringPreferencesKey(UserPreferences.User_Token.name)
     private val name = stringPreferencesKey(UserPreferences.Username.name)
     private val email = stringPreferencesKey(UserPreferences.Email.name)
+
+    fun getUserUid(): Flow<String> =
+        dataStore.data.map { it[uid] ?: preferenceDefaultValue }
 
     fun getUserToken(): Flow<String> =
         dataStore.data.map { it[token] ?: preferenceDefaultValue }
@@ -31,11 +35,13 @@ class Preferences private constructor(private val dataStore: DataStore<Preferenc
         dataStore.data.map { it[email] ?: preferenceDefaultValue }
 
     suspend fun saveLoginSession(
+        uid: String,
         usertoken: String,
         username: String,
         email: String,
     ) {
         dataStore.edit { preferences ->
+            preferences[this.uid] = uid
             preferences[token] = usertoken
             preferences[name] = username
             preferences[this.email] = email
@@ -62,6 +68,6 @@ class Preferences private constructor(private val dataStore: DataStore<Preferenc
 }
 
 enum class UserPreferences {
-    Username, User_Token, Email
+    Uid, Username, User_Token, Email
 }
 

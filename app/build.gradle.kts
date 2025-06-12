@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -66,6 +67,7 @@ dependencies {
     implementation(libs.gson)
     implementation("androidx.datastore:datastore-preferences:1.1.7")
     implementation("io.jsonwebtoken:jjwt:0.12.6")
+    implementation(libs.androidx.material3.android)
     ksp("androidx.room:room-compiler:2.7.1")
     implementation("com.google.devtools.ksp:symbol-processing-api:2.1.21-2.0.1")
     implementation(libs.aallam.openai.client)

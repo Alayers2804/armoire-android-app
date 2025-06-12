@@ -24,10 +24,20 @@ class BrowseViewmodel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val wardrobe = outfitDao.getWardrobeByStyle(style)
-                return _outfitBrowser.postValue(wardrobe)
-
+                _outfitBrowser.postValue(wardrobe)
             } catch (e: Exception) {
                 Log.e("OutfitViewModel", "Error fetching outfit for status: $style", e)
+            }
+        }
+    }
+
+    fun getAllWardrobe(){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val wardrobe = outfitDao.getAllWardrobe()
+                _outfitBrowser.postValue(wardrobe)
+            } catch (e: Exception) {
+                Log.e("OutfitViewModel", "Error fetching outfit", e)
             }
         }
     }

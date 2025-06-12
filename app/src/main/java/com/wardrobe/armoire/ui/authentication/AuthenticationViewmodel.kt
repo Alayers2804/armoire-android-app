@@ -51,15 +51,17 @@ class AuthenticationViewmodel(application: Application, private val pref: Prefer
         val hashedPassword = HashUtil.hash(password)
         val loginResult = userDao.authenticateUser(username, hashedPassword)
         val email = loginResult?.email
+        val uid = loginResult?.uid
         if (loginResult != null) {
             val token = GenerateTokenUtil.generateToken(username, currentTime)
-            setUserPreferences(token, username, email.toString())
+            setUserPreferences(uid.toString(), token, username, email.toString())
         }
         return loginResult != null
     }
 
     fun getUserPreference(property: UserPreferences): LiveData<String> {
         return when (property) {
+            UserPreferences.Uid -> pref.getUserUid().asLiveData()
             UserPreferences.User_Token -> pref.getUserToken().asLiveData()
             UserPreferences.Username -> pref.getUserName().asLiveData()
             UserPreferences.Email -> pref.getEmail().asLiveData()
@@ -67,12 +69,13 @@ class AuthenticationViewmodel(application: Application, private val pref: Prefer
     }
 
     fun setUserPreferences(
+        uid : String,
         userToken: String,
         userName: String,
         email: String
         ) {
         viewModelScope.launch {
-            pref.saveLoginSession(userToken, userName, email)
+            pref.saveLoginSession(uid, userToken, userName, email)
         }
     }
 

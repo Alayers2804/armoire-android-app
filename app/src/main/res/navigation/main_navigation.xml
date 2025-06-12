@@ -52,10 +52,39 @@
         android:id="@+id/shopFragment"
         android:name="com.wardrobe.armoire.ui.shop.ShopFragment"
         android:label="fragment_shop"
-        tools:layout="@layout/fragment_shop" />
+        tools:layout="@layout/fragment_shop" >
+        <action
+            android:id="@+id/action_shopFragment_to_detailShopFragment"
+            app:destination="@id/detailShopFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailShopFragment"
+        android:name="com.wardrobe.armoire.ui.shop.DetailShopFragment"
+        android:label="Detail Shop"
+        tools:layout="@layout/fragment_detail_shop">
+
+        <!-- Add this argument to support passing ShopModel -->
+        <argument
+            android:name="shopItem"
+            app:argType="com.wardrobe.armoire.model.ShopModel"
+            app:nullable="false" />
+    </fragment>
+
     <fragment
         android:id="@+id/yourOrderFragment"
         android:name="com.wardrobe.armoire.ui.profile.YourOrderFragment"
         android:label="fragment_your_order"
         tools:layout="@layout/fragment_your_order" />
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.wardrobe.armoire.ui.cart.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
+
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.wardrobe.armoire.ui.checkout.CheckoutFragment"
+        android:label="fragment_checkout"
+        tools:layout="@layout/fragment_checkout" />
 </navigation>
