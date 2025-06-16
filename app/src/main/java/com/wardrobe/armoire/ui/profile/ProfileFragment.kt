@@ -54,7 +54,9 @@ class ProfileFragment : Fragment() {
         with(binding) {
             viewModel.getUserPreference(UserPreferences.Username).observe(viewLifecycleOwner) { username ->
                 txtUsernameProfile.text = username
+                txtName.text = username
             }
+
 
             viewModel.getUserPreference(UserPreferences.Email).observe(viewLifecycleOwner) { email ->
                 txtEmailProfile.text = email
@@ -77,6 +79,16 @@ class ProfileFragment : Fragment() {
                 val intent = Intent(requireContext(), AuthenticationActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
+            }
+
+            viewModel.getUserByUid().observe(viewLifecycleOwner) { user ->
+                val styleList = user?.style ?: emptyList()
+                if (styleList.isNotEmpty()) {
+                    val styleSubtitle = styleList.joinToString(" • ")  // nice delimiter
+                    binding.txtSubtitle.text = styleSubtitle
+                } else {
+                    binding.txtSubtitle.text = "exploring fashion everyday~" // fallback
+                }
             }
         }
     }

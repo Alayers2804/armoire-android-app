@@ -30,12 +30,27 @@ class ShopAdapter(
 
     override fun onBindViewHolder(holder: ShopViewHolder, position: Int) {
         val item = items[position]
+
         holder.title.text = item.name
         holder.price.text = "Rp${item.price}"
-        // If you store image as URL or resource name, load here:
-        holder.img.setImageResource(R.drawable.blouse_gading_white_korean_woman)
 
-        holder.button.setOnClickListener { onItemClick(item) }
+        val context = holder.itemView.context
+        val imageResId = context.resources.getIdentifier(
+            item.path, "drawable", context.packageName
+        )
+        if (imageResId != 0) {
+            holder.img.setImageResource(imageResId)
+        } else {
+            holder.img.setImageResource(R.drawable.search_svgrepo_com)
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClick(item)
+        }
+
+        holder.button.setOnClickListener {
+            onItemClick(item)
+        }
     }
 
     override fun getItemCount(): Int = items.size

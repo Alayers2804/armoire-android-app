@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.wardrobe.armoire.AppDatabase
@@ -14,6 +15,7 @@ import com.wardrobe.armoire.utils.GenerateTokenUtil
 import com.wardrobe.armoire.utils.HashUtil
 import com.wardrobe.armoire.utils.Preferences
 import com.wardrobe.armoire.utils.UserPreferences
+import com.wardrobe.armoire.utils.preferenceDefaultValue
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.Date
@@ -83,5 +85,18 @@ class AuthenticationViewmodel(application: Application, private val pref: Prefer
         viewModelScope.launch {
             pref.clearLoginSession()
         }
+    }
+
+    fun getUserByUid(): LiveData<UserModel?> {
+        val result = MutableLiveData<UserModel?>()
+        viewModelScope.launch {
+            pref.getUserUid().collect { uid ->
+                if (uid != preferenceDefaultValue) {
+                    val user = userDao.getUserById(uid)
+                    result.postValue(user)
+                }
+            }
+        }
+        return result
     }
 }

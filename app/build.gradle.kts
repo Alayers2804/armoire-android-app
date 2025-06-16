@@ -70,6 +70,8 @@ dependencies {
     implementation(libs.androidx.material3.android)
     ksp("androidx.room:room-compiler:2.7.1")
     implementation("com.google.devtools.ksp:symbol-processing-api:2.1.21-2.0.1")
+    implementation("io.ktor:ktor-client-core:3.1.3")
+    implementation("io.ktor:ktor-client-cio:3.1.3")
     implementation(libs.aallam.openai.client)
     implementation(libs.okhttp3.logging.interceptor)
     testImplementation(libs.junit)

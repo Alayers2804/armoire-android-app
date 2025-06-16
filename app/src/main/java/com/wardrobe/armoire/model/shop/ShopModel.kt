@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
 @Parcelize
@@ -24,24 +25,5 @@ data class ShopModel(
         parcel.readInt(),
         parcel.readString().toString(),
         parcel.readString().toString()
-    ) {
-    }
-
-    override fun describeContents(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        TODO("Not yet implemented")
-    }
-
-    companion object CREATOR : Parcelable.Creator<ShopModel> {
-        override fun createFromParcel(parcel: Parcel): ShopModel {
-            return ShopModel(parcel)
-        }
-
-        override fun newArray(size: Int): Array<ShopModel?> {
-            return arrayOfNulls(size)
-        }
-    }
+    )
 }

@@ -5,56 +5,76 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.wardrobe.armoire.AppDatabase
+import com.wardrobe.armoire.BaseViewModelFactory
 import com.wardrobe.armoire.R
+import com.wardrobe.armoire.model.cart.CartModel
+import com.wardrobe.armoire.utils.Preferences
+import com.wardrobe.armoire.utils.dataStore
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CheckoutFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CheckoutFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var checkoutVM: CheckoutViewmodel
+    private lateinit var preferences: Preferences
+    private lateinit var adapter: CheckoutAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_checkout, container, false)
+    ): View = inflater.inflate(R.layout.fragment_checkout, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Init Preferences and DAO
+        preferences = Preferences.getInstance(requireContext().dataStore)
+
+
+        checkoutVM = ViewModelProvider(
+            this,
+            BaseViewModelFactory { CheckoutViewmodel(requireActivity().application) }
+        )[CheckoutViewmodel::class.java]
+        // Start loading cart items
+        checkoutVM.loadSelectedCartItems()
+
+        // RecyclerView setup
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_checkout_items)
+        adapter = CheckoutAdapter()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+
+        // Observe LiveData
+        observeViewModel(view)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CheckoutFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CheckoutFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun observeViewModel(view: View) {
+        val subtotalText = view.findViewById<TextView>(R.id.text_subtotal) // you'll need to give IDs
+        val totalText = view.findViewById<TextView>(R.id.text_total)
+
+        checkoutVM.selectedCartItems.observe(viewLifecycleOwner) { items ->
+            adapter.submitList(items)
+        }
+
+        checkoutVM.subtotal.observe(viewLifecycleOwner) { subtotal ->
+            subtotalText?.text = "Item Subtotal\t\t\t\tRp ${subtotal}"
+        }
+
+        checkoutVM.total.observe(viewLifecycleOwner) { total ->
+            totalText?.text = "Total Payment\t\t\t\tRp ${total}"
+        }
+
+        // Place order button
+        view.findViewById<Button>(R.id.button_place_order).setOnClickListener {
+            // Hardcoded address for now
+            checkoutVM.placeOrder("Siwalankerto Timur VI/AE-12, Surabaya")
+            Toast.makeText(requireContext(), "Order placed", Toast.LENGTH_SHORT).show()
+        }
     }
 }

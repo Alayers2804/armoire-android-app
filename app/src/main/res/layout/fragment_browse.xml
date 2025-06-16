@@ -1,56 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/browse_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <!-- Search Bar Container -->
+    <!-- All your UI inside a vertical layout -->
     <LinearLayout
-        android:id="@+id/search_bar_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/search_background_xml"
-        android:padding="8dp"
-        android:gravity="center_vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- Back/Clear Button -->
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
+        <!-- 🔍 Search Bar -->
+        <LinearLayout
+            android:id="@+id/search_bar_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/button"
-            android:contentDescription="Back"
-            android:visibility="gone" />
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/search_background_xml"
+            android:elevation="2dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-        <!-- Search Input -->
-        <EditText
-            android:id="@+id/edit_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
+                android:src="@drawable/button"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/edit_search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Search outfit inspiration..."
+                android:imeOptions="actionSearch"
+                android:paddingStart="8dp"
+                android:singleLine="true"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/button_ai_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/buttonPrimary"
+                android:minHeight="40dp"
+                android:text="AI Mix"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/cart_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/bg_cart_badge"
+                android:padding="3dp"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:visibility="gone" />
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_results"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="Search..."
-            android:singleLine="true"
-            android:imeOptions="actionSearch" />
+            android:clipToPadding="false"
+            android:paddingTop="10dp" />
     </LinearLayout>
 
-    <TextView
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginTop="15dp"
-        android:text="Search Suggestions"
+    <!-- Centered ProgressBar overlay -->
+    <ProgressBar
+        android:id="@+id/progress_ai_outfit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_results"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:paddingTop="10dp" />
-
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+</FrameLayout>

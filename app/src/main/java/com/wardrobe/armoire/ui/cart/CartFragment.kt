@@ -5,30 +5,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.wardrobe.armoire.AppDatabase
+import com.wardrobe.armoire.BaseViewModelFactory
 import com.wardrobe.armoire.R
+import com.wardrobe.armoire.utils.Preferences
+import com.wardrobe.armoire.utils.dataStore
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CartFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CartFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var cartViewModel: CartViewmodel
+    private lateinit var preferences: Preferences
+    private lateinit var cartAdapter: CartAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +31,44 @@ class CartFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_cart, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CartFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CartFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        preferences = Preferences.getInstance(requireContext().dataStore)
+        val cartDao = AppDatabase.getDatabase(requireContext()).cartDao()
+        cartViewModel = ViewModelProvider(
+            this,
+            BaseViewModelFactory { CartViewmodel(cartDao, preferences) }
+        )[CartViewmodel::class.java]
+
+        // Setup RecyclerView
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_cart)
+        cartAdapter = CartAdapter(onCheckChanged = { updatedItem ->
+            cartViewModel.update(updatedItem)
+        })
+        recyclerView.adapter = cartAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        setupObservers()
+
+        val buttonCheckout = view.findViewById<Button>(R.id.button_checkout)
+        buttonCheckout.setOnClickListener {
+            val selectedItems = cartViewModel.cartItems.value?.filter { it.isChecked } ?: emptyList()
+            if (selectedItems.isNotEmpty()) {
+                val bundle = Bundle().apply {
+                    putParcelableArrayList("checkoutItems", ArrayList(selectedItems))
                 }
+                findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment, bundle)
+            } else {
+                Toast.makeText(requireContext(), "No item selected", Toast.LENGTH_SHORT).show()
             }
+        }
     }
+
+    private fun setupObservers() {
+        cartViewModel.cartItems.observe(viewLifecycleOwner) { cartList ->
+            cartAdapter.submitList(cartList)
+        }
+    }
+
 }

@@ -60,4 +60,13 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onBackPressed() {
+        // Only exit if we are on the start destination (e.g., wardrobeFragment)
+        if (navController.currentDestination?.id == navController.graph.startDestinationId) {
+            finishAffinity() // Exits the app
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.wardrobe.armoire.model.api.gpt
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,18 +26,30 @@ class RecommendationViewmodel(application: Application) : AndroidViewModel(appli
     private val _recommendedOutfits = MutableLiveData<List<OutfitModel>>()
     val recommendedOutfits: LiveData<List<OutfitModel>> = _recommendedOutfits
 
-        fun fetchShopRecommendations(userId: String) {
-            viewModelScope.launch(Dispatchers.IO) {
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    fun fetchShopRecommendations(userId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isLoading.postValue(true)
+
+            try {
                 val user = userDao.getUserById(userId) ?: return@launch
                 val shopItems = shopDao.getAllShopItems()
 
                 val response = ApiConfig.getShopRecommendation(user, shopItems)
                 val recommended = Gson().fromJson(response, ShopRecommendation::class.java)
-                val filtered = shopItems.filter { recommended.recommended_shop_uids.contains(it.uid) }
+                val recommendedUids = recommended.recommended_shop_uids ?: emptyList()
+                val filtered = shopItems.filter { it.uid in recommendedUids }
 
                 _recommendedShopItems.postValue(filtered)
+            } catch (e: Exception) {
+                Log.e("RecommendationVM", "Error during AI recommendation", e)
+            } finally {
+                _isLoading.postValue(false)
             }
         }
+    }
 
     fun fetchOutfitRecommendations(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -63,5 +76,6 @@ class RecommendationViewmodel(application: Application) : AndroidViewModel(appli
             _recommendedShopItems.postValue(filtered)
         }
     }
+
 
 }

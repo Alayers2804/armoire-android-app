@@ -99,4 +99,12 @@ class WardrobeFragment : Fragment() {
         outfitViewmodel.fetchOutfitByStatus("my_outfit")
         outfitViewmodel.fetchOutfitByStatus("my_saved")
     }
+
+    override fun onResume() {
+        super.onResume()
+        wardrobeViewmodel.fetchWardrobeByStatus("my_item")
+        wardrobeViewmodel.fetchWardrobeByStatus("my_preloved")
+        outfitViewmodel.fetchOutfitByStatus("my_outfit")
+        outfitViewmodel.fetchOutfitByStatus("my_saved")
+    }
 }

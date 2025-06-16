@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.wardrobe.armoire.model.cart.CartDao
+import com.wardrobe.armoire.model.order.OrderDao
 import com.wardrobe.armoire.model.outfit.OutfitDao
 import com.wardrobe.armoire.model.outfit.OutfitModel
 import com.wardrobe.armoire.model.shop.ShopDao
@@ -13,10 +15,12 @@ import com.wardrobe.armoire.model.user.UserDao
 import com.wardrobe.armoire.model.user.UserModel
 import com.wardrobe.armoire.model.wardrobe.WardrobeDao
 import com.wardrobe.armoire.model.wardrobe.WardrobeModel
+import com.wardrobe.armoire.model.cart.CartModel
+import com.wardrobe.armoire.model.order.OrderModel
 import com.wardrobe.armoire.utils.Converters
 
 @Database(
-    entities = [WardrobeModel::class, UserModel::class, OutfitModel::class, ShopModel::class],
+    entities = [WardrobeModel::class, UserModel::class, OutfitModel::class, ShopModel::class, OrderModel::class, CartModel::class],
     version = 1,
     exportSchema = false
 )
@@ -27,6 +31,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun outfitDao(): OutfitDao
     abstract fun shopDao() : ShopDao
+    abstract fun orderDao() : OrderDao
+    abstract fun cartDao() : CartDao
+
 
     companion object {
         @Volatile

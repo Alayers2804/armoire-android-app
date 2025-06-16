@@ -58,7 +58,10 @@ class LoginFragment : Fragment() {
                     val result = viewModel.login(email.trim(), password.trim())
                     if (result == true) {
                         Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(context, MainActivity::class.java))
+                        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        }
+                        startActivity(intent)
                     } else {
                         Toast.makeText(
                             context,

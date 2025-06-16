@@ -67,7 +67,7 @@
         <!-- Add this argument to support passing ShopModel -->
         <argument
             android:name="shopItem"
-            app:argType="com.wardrobe.armoire.model.ShopModel"
+            app:argType="com.wardrobe.armoire.model.shop.ShopModel"
             app:nullable="false" />
     </fragment>
 
@@ -80,7 +80,11 @@
         android:id="@+id/cartFragment"
         android:name="com.wardrobe.armoire.ui.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/checkoutFragment"

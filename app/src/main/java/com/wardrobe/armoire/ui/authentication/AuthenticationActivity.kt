@@ -31,24 +31,6 @@ class AuthenticationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val preferences = Preferences.getInstance(dataStore)
-
-        val factory = BaseViewModelFactory {
-            AuthenticationViewmodel(application, preferences)
-        }
-        val authenticationViewmodel = ViewModelProvider(this, factory)[AuthenticationViewmodel::class.java]
-
-        authenticationViewmodel.getUserPreference(UserPreferences.User_Token)
-            .observe(this) { token ->
-                val decoded = DecodeToken.decodeToken(token)
-                if (!mainActivityStarted && decoded != null && !decoded.isExpired) {
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("token", token)
-                    startActivity(intent)
-                    mainActivityStarted = true
-                    finish()
-                }
-            }
 
         binding = ActivityAuthenticationBinding.inflate(layoutInflater)
         setContentView(binding.root)
