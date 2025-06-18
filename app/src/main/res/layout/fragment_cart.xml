@@ -20,10 +20,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shopping Cart (12)"
+            android:text="Shopping Cart"
             android:textSize="18sp"
             android:layout_marginStart="8dp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_item_count"
+            android:layout_marginStart="8dp"
+            android:text="(12)"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -48,20 +57,33 @@
             android:layout_height="wrap_content"
             android:text="All" />
 
+
         <TextView
             android:id="@+id/text_total"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="end"
+            android:layout_marginEnd="8dp"
             android:text="Total Rp135.000"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/button_clear_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear All"
+            android:backgroundTint="#B00020"
+            android:textColor="@android:color/white"
+            android:layout_gravity="end"/>
+
+
+        <Button
             android:id="@+id/button_checkout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="Checkout"
             android:backgroundTint="#2B204D"
             android:textColor="@android:color/white" />

@@ -204,10 +204,18 @@ class RegisterFragment : Fragment() {
 
                 child.setOnClickListener {
                     if (selectedStyles.contains(style)) {
+                        // Deselect style
                         selectedStyles.remove(style)
                         child.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
                         child.setBackgroundResource(0)
                     } else {
+                        // Limit to 3 styles
+                        if (selectedStyles.size >= 3) {
+                            Toast.makeText(context, "You can only select up to 3 styles", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }
+
+                        // Select new style
                         selectedStyles.add(style)
                         child.animate().scaleX(1.1f).scaleY(1.1f).setDuration(150).start()
                         child.setBackgroundResource(R.drawable.selection_border)

@@ -1,11 +1,13 @@
 package com.wardrobe.armoire.ui.cart
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -63,12 +65,59 @@ class CartFragment : Fragment() {
                 Toast.makeText(requireContext(), "No item selected", Toast.LENGTH_SHORT).show()
             }
         }
+
+        val buttonClearAll = view.findViewById<Button>(R.id.button_clear_all)
+        buttonClearAll.setOnClickListener {
+            val selectedItems = cartViewModel.cartItems.value?.filter { it.isChecked } ?: emptyList()
+            if (selectedItems.isNotEmpty()) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Remove Selected")
+                    .setMessage("Remove ${selectedItems.size} selected items from the cart?")
+                    .setPositiveButton("Yes") { _, _ ->
+                        selectedItems.forEach { cartViewModel.delete(it) }
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            } else {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Clear Cart")
+                    .setMessage("Are you sure you want to remove all items from the cart?")
+                    .setPositiveButton("Yes") { _, _ ->
+                        cartViewModel.clearCart()
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            }
+        }
+
     }
 
     private fun setupObservers() {
+        val textItemCount = view?.findViewById<TextView>(R.id.text_item_count)
+        val textTotal = view?.findViewById<TextView>(R.id.text_total)
+        val buttonClearAll = view?.findViewById<Button>(R.id.button_clear_all)
+
         cartViewModel.cartItems.observe(viewLifecycleOwner) { cartList ->
             cartAdapter.submitList(cartList)
+            textItemCount?.text = "(${cartList.size})"
+
+            val selectedItems = cartList.filter { it.isChecked }
+            val totalPrice = selectedItems.sumOf { it.price }
+            textTotal?.text = "Total Rp${String.format("%,d", totalPrice)}"
+
+            // Update button text and visibility
+            buttonClearAll?.apply {
+                visibility = if (cartList.isEmpty()) View.GONE else View.VISIBLE
+                text = if (selectedItems.isNotEmpty()) {
+                    "Remove Selected (${selectedItems.size})"
+                } else {
+                    "Clear All"
+                }
+            }
         }
     }
 
+
 }
+
+

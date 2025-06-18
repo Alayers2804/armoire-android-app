@@ -6,17 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MediatorLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wardrobe.armoire.R
 import com.wardrobe.armoire.databinding.FragmentWardrobeBinding
 import com.wardrobe.armoire.model.wardrobe.CategoryItem
 import com.wardrobe.armoire.model.wardrobe.WardrobeCategory
-import com.wardrobe.armoire.ui.outfit.OutfitAdapter
 import com.wardrobe.armoire.ui.outfit.OutfitViewmodel
 import kotlin.getValue
 
@@ -64,14 +65,14 @@ class WardrobeFragment : Fragment() {
             val combined = mutableListOf<WardrobeCategory>()
 
             val wardrobeItems = wardrobeViewmodel.wardrobeMyitems.value?.map { CategoryItem.Wardrobe(it) } ?: emptyList()
-            val wardrobeSaved = wardrobeViewmodel.wardrobeMyPreloved.value?.map { CategoryItem.Wardrobe(it) } ?: emptyList()
+            val wardrobePreloved = wardrobeViewmodel.wardrobeMyPreloved.value?.map { CategoryItem.Wardrobe(it) } ?: emptyList()
             val outfitItems = outfitViewmodel.outfitMyOutfits.value?.map { CategoryItem.Outfit(it) } ?: emptyList()
             val outfitSaved = outfitViewmodel.outfitMySaved.value?.map { CategoryItem.Outfit(it) } ?: emptyList()
 
             combined.add(WardrobeCategory("My Wardrobe", wardrobeItems))
-            combined.add(WardrobeCategory("My Saved Wardrobe", wardrobeSaved))
+            combined.add(WardrobeCategory("My Preloved", wardrobePreloved))
             combined.add(WardrobeCategory("My Outfits", outfitItems))
-            combined.add(WardrobeCategory("My Saved Outfits", outfitSaved))
+            combined.add(WardrobeCategory("My Saved", outfitSaved))
 
             combinedCategories.value = combined
         }
@@ -85,8 +86,24 @@ class WardrobeFragment : Fragment() {
             if (::categoryAdapter.isInitialized) {
                 categoryAdapter.updateData(categories)
             } else {
-                categoryAdapter = CategoryAdapter(categories) { desc ->
-                    Toast.makeText(requireContext(), desc, Toast.LENGTH_SHORT).show()
+                categoryAdapter = CategoryAdapter(categories) { categoryName ->
+                    when (categoryName) {
+                        "My Wardrobe" -> {
+                            findNavController().navigate(R.id.action_wardrobeFragment_to_myItemsFragment)
+                        }
+                        "My Preloved" -> {
+//                            findNavController().navigate(R.id.action_wardrobeFragment_to_myItemsFragment)
+                            Toast.makeText(requireContext(), "Still In Development", Toast.LENGTH_SHORT).show()
+                        }
+                        "My Outfits" -> {
+                            val bundle = bundleOf("status" to "my_outfit")
+                            findNavController().navigate(R.id.action_wardrobeFragment_to_myOutfitsFragment, bundle)
+                        }
+                        "My Saved" -> {
+                            val bundle = bundleOf("status" to "my_saved")
+                            findNavController().navigate(R.id.action_wardrobeFragment_to_myOutfitsFragment, bundle)
+                        }
+                    }
                 }
                 binding.recyclerView.layoutManager = LinearLayoutManager(context)
                 binding.recyclerView.adapter = categoryAdapter
