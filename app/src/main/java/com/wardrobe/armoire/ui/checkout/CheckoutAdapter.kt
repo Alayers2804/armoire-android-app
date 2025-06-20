@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wardrobe.armoire.R
 import com.wardrobe.armoire.model.cart.CartModel
+import java.text.NumberFormat
+import java.util.Locale
 
 class CheckoutAdapter : ListAdapter<CartModel, CheckoutAdapter.CheckoutViewHolder>(DIFF_CALLBACK) {
 
@@ -20,7 +22,7 @@ class CheckoutAdapter : ListAdapter<CartModel, CheckoutAdapter.CheckoutViewHolde
 
         fun bind(item: CartModel) {
             name.text = item.name
-            price.text = "Rp${item.price}"
+            price.text = formatRupiah(item.price)
 
             val context = itemView.context
             val imageResId = context.resources.getIdentifier(
@@ -54,5 +56,10 @@ class CheckoutAdapter : ListAdapter<CartModel, CheckoutAdapter.CheckoutViewHolde
                 return oldItem == newItem
             }
         }
+    }
+
+    private fun formatRupiah(amount: Int): String {
+        val formatter = NumberFormat.getNumberInstance(Locale("in", "ID"))
+        return "Rp. ${formatter.format(amount)},-"
     }
 }

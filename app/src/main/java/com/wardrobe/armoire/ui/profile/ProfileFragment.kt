@@ -68,12 +68,11 @@ class ProfileFragment : Fragment() {
             }
 
             binding.yourOrder.setOnClickListener {
-                Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
-//                findNavController().navigate(R.id.action_profileFragment_to_yourOrderFragment)
+                findNavController().navigate(R.id.action_profileFragment_to_orderFragment)
             }
 
             binding.incomingOrder.setOnClickListener {
-                findNavController().navigate(R.id.action_profileFragment_to_orderFragment)
+                Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
             }
 
             btnLogout.setOnClickListener {

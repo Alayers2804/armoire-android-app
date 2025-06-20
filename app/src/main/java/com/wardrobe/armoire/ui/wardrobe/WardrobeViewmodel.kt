@@ -47,8 +47,8 @@ class WardrobeViewmodel(application: Application): AndroidViewModel(application)
             try {
                 val wardrobe = wardrobeDao.getWardrobeByStatus(status)
                 when (status) {
-                    "my_item" -> _wardrobeMyItems.postValue(wardrobe)
-                    "my_preloved" -> _wardrobeMyPreloved.postValue(wardrobe)
+                    "my_item" -> _wardrobeMyItems.postValue(wardrobe.toList())
+                    "my_preloved" -> _wardrobeMyPreloved.postValue(wardrobe.toList())
                     else -> Log.w("WardrobeViewModel", "Unknown status: $status")
                 }
             } catch (e: Exception) {
@@ -72,6 +72,13 @@ class WardrobeViewmodel(application: Application): AndroidViewModel(application)
         viewModelScope.launch(Dispatchers.IO) {
             wardrobeDao.insert(item)
             fetchWardrobeByStatus("my_item") // Refresh list
+        }
+    }
+
+    fun deleteWardrobeItem(item: WardrobeModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            wardrobeDao.delete(item)
+            fetchWardrobeByStatus("my_item")
         }
     }
 }

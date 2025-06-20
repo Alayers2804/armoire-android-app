@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wardrobe.armoire.R
 import com.wardrobe.armoire.databinding.FragmentWardrobeBinding
+import com.wardrobe.armoire.model.outfit.OutfitModel
 import com.wardrobe.armoire.model.wardrobe.CategoryItem
 import com.wardrobe.armoire.model.wardrobe.WardrobeCategory
+import com.wardrobe.armoire.model.wardrobe.WardrobeModel
 import com.wardrobe.armoire.ui.outfit.OutfitViewmodel
 import kotlin.getValue
 
@@ -75,32 +77,46 @@ class WardrobeFragment : Fragment() {
         outfitViewmodel.outfitMySaved.observe(viewLifecycleOwner) { updateCombinedCategories() }
 
         combinedCategories.observe(viewLifecycleOwner) { categories ->
-            if (::categoryAdapter.isInitialized) {
-                categoryAdapter.updateData(categories)
-            } else {
-                categoryAdapter = CategoryAdapter(categories) { categoryName ->
-                    when (categoryName) {
-                        "My Wardrobe" -> {
-                            findNavController().navigate(R.id.action_wardrobeFragment_to_myItemsFragment)
+            if (!::categoryAdapter.isInitialized) {
+                categoryAdapter = CategoryAdapter(categories) { item ->
+                    when (item) {
+                        is String -> {
+                            when (item) {
+                                "My Wardrobe" -> {
+                                    findNavController().navigate(R.id.action_wardrobeFragment_to_myItemsFragment)
+                                }
+                                "My Preloved" -> {
+                                    Toast.makeText(requireContext(), "Still In Development", Toast.LENGTH_SHORT).show()
+                                }
+                                "My Outfits" -> {
+                                    val bundle = bundleOf("status" to "my_outfit")
+                                    findNavController().navigate(R.id.action_wardrobeFragment_to_myOutfitsFragment, bundle)
+                                }
+                                "My Saved" -> {
+                                    val bundle = bundleOf("status" to "my_saved")
+                                    findNavController().navigate(R.id.action_wardrobeFragment_to_myOutfitsFragment, bundle)
+                                }
+                            }
                         }
-                        "My Preloved" -> {
-//                            findNavController().navigate(R.id.action_wardrobeFragment_to_myItemsFragment)
-                            Toast.makeText(requireContext(), "Still In Development", Toast.LENGTH_SHORT).show()
+
+                        is WardrobeModel -> {
+                            val bundle = bundleOf("wardrobe" to item)
+                            findNavController().navigate(R.id.wardrobeDetailFragment, bundle)
                         }
-                        "My Outfits" -> {
-                            val bundle = bundleOf("status" to "my_outfit")
-                            findNavController().navigate(R.id.action_wardrobeFragment_to_myOutfitsFragment, bundle)
-                        }
-                        "My Saved" -> {
-                            val bundle = bundleOf("status" to "my_saved")
-                            findNavController().navigate(R.id.action_wardrobeFragment_to_myOutfitsFragment, bundle)
+
+                        is OutfitModel -> {
+                            val bundle = bundleOf("outfit" to item)
+                            findNavController().navigate(R.id.outfitDetailFragment, bundle)
                         }
                     }
                 }
+
                 binding.recyclerView.layoutManager = LinearLayoutManager(context)
-                binding.recyclerView.adapter = categoryAdapter
             }
+            binding.recyclerView.adapter = categoryAdapter
+            categoryAdapter.updateData(categories)
         }
+
 
     }
 
@@ -118,5 +134,12 @@ class WardrobeFragment : Fragment() {
         combined.add(WardrobeCategory("My Saved", outfitSaved))
 
         combinedCategories.value = combined
+    }
+
+    override fun onResume() {
+        super.onResume()
+        wardrobeViewmodel.wardrobeMyitems.observe(viewLifecycleOwner) {
+            updateCombinedCategories()
+        }
     }
 }

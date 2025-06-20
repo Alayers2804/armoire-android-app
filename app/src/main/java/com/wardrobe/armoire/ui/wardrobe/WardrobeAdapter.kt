@@ -1,5 +1,6 @@
 package com.wardrobe.armoire.ui.wardrobe
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,13 +9,16 @@ import com.wardrobe.armoire.model.wardrobe.WardrobeModel
 
 class WardrobeAdapter(
     private var dataList: List<WardrobeModel>,
-    private val onClick: (String) -> Unit,
-    private val isSelectable: Boolean = false  // <-- default false for normal use
+    private val onClick: (WardrobeModel) -> Unit,
+    private val isSelectable: Boolean = false,
+    private val isDeletable: Boolean = false,
+    private val onDelete: (WardrobeModel) -> Unit = {}
 ) : RecyclerView.Adapter<WardrobeViewholder>() {
 
     private val selectedItems = mutableSetOf<String>()
 
     fun updateData(newList: List<WardrobeModel>) {
+        Log.d("WardrobeAdapter", "updateData: ${newList.size} items")
         dataList = newList
         notifyDataSetChanged()
     }
@@ -32,14 +36,16 @@ class WardrobeAdapter(
             item = item,
             isSelected = isSelectable && isSelected,
             isSelectable = isSelectable,
-            onClick = { uid ->
+            onClick = {
                 if (isSelectable) {
-                    if (selectedItems.contains(uid)) selectedItems.remove(uid)
-                    else selectedItems.add(uid)
+                    if (selectedItems.contains(it.uid)) selectedItems.remove(it.uid)
+                    else selectedItems.add(it.uid)
                     notifyItemChanged(position)
                 }
-                onClick(uid)
-            }
+                onClick(it)
+            },
+            isDeletable = isDeletable,
+            onDelete = onDelete
         )
     }
 

@@ -76,7 +76,7 @@ object PromptBuilder {
     fun buildVisionPrompt(): String = """
         You are a fashion assistant that has capability to recommend what people should wear.
         Based on the images (a full wardrobe set: top, pants, bag, and shoes), generate:
-        - A DALL·E prompt that describes the full outfit as a flat lay.
+        - A DALL·E prompt that describes the full outfit as a flat lay with white background.
         - A short style description.
         - A fashion style from the exact list provided.
 

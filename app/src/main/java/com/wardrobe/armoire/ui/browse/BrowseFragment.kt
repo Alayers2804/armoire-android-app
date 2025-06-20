@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -59,7 +60,12 @@ class BrowseFragment : Fragment() {
         aiButton = view.findViewById(R.id.button_ai_recommend)
         progressBar = view.findViewById(R.id.progress_ai_outfit)
 
-        adapter = OutfitAdapter(emptyList()) {}
+        adapter = OutfitAdapter(
+            emptyList(),
+            onClick = { uid ->
+                Toast.makeText(requireContext(), "Clicked: $uid", Toast.LENGTH_SHORT).show()
+            }
+        ) {}
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         recyclerView.adapter = adapter
 

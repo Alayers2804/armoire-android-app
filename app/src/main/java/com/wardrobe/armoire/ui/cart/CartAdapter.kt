@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wardrobe.armoire.R
 import com.wardrobe.armoire.model.cart.CartModel
+import java.text.NumberFormat
+import java.util.Locale
 
 class CartAdapter(
     private var items: List<CartModel> = listOf(),
@@ -33,7 +35,7 @@ class CartAdapter(
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val item = items[position]
         holder.name.text = item.name
-        holder.price.text = "Rp${item.price}"
+        holder.price.text = formatRupiah(item.price)
 
         val context = holder.itemView.context
         val imageResId = context.resources.getIdentifier(
@@ -57,6 +59,11 @@ class CartAdapter(
     fun submitList(newItems: List<CartModel>) {
         items = newItems
         notifyDataSetChanged()
+    }
+
+    private fun formatRupiah(amount: Int): String {
+        val formatter = NumberFormat.getNumberInstance(Locale("in", "ID"))
+        return "Rp. ${formatter.format(amount)},-"
     }
 }
 

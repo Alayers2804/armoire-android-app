@@ -55,7 +55,7 @@
             app:boxCornerRadiusTopStart="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/textinput_username"
+            app:layout_constraintBottom_toTopOf="@id/textinput_email"
             app:startIconDrawable="@drawable/baseline_account_circle_24">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -65,7 +65,7 @@
 
         <!-- Username Field -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textinput_username"
+            android:id="@+id/textinput_email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textinput_email"
+            android:id="@+id/textinput_username"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
             app:boxCornerRadiusTopStart="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textinput_username"
+            app:layout_constraintTop_toBottomOf="@id/textinput_email"
             app:startIconDrawable="@drawable/baseline_all_inbox_24">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -121,7 +121,7 @@
             app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textinput_email"
+            app:layout_constraintTop_toBottomOf="@id/textinput_username"
             app:startIconDrawable="@drawable/baseline_lock_24">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -141,6 +141,7 @@
             app:layout_constraintTop_toBottomOf="@id/password_input">
 
             <CheckBox
+                android:id="@+id/checkbox_tos"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="15dp" />

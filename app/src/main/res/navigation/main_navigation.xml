@@ -80,9 +80,9 @@
 
     <fragment
         android:id="@+id/yourOrderFragment"
-        android:name="com.wardrobe.armoire.ui.profile.YourOrderFragment"
+        android:name="com.wardrobe.armoire.ui.profile.IncomingOrderFragment"
         android:label="fragment_your_order"
-        tools:layout="@layout/fragment_your_order" />
+        tools:layout="@layout/fragment_incoming_order" />
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.wardrobe.armoire.ui.cart.CartFragment"
@@ -105,6 +105,9 @@
         <action
             android:id="@+id/action_myOutfitsFragment_to_wardrobeFragment"
             app:destination="@id/wardrobeFragment" />
+        <action
+            android:id="@+id/action_myOutfitsFragment_to_outfitDetailFragment"
+            app:destination="@id/outfitDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/myItemsFragment"
@@ -113,5 +116,16 @@
         <action
             android:id="@+id/action_myItemsFragment_to_wardrobeFragment"
             app:destination="@id/wardrobeFragment" />
+        <action
+            android:id="@+id/action_myItemsFragment_to_wardrobeDetailFragment"
+            app:destination="@id/wardrobeDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/wardrobeDetailFragment"
+        android:name="com.wardrobe.armoire.ui.wardrobe.WardrobeDetailFragment"
+        android:label="WardrobeDetailFragment" />
+    <fragment
+        android:id="@+id/outfitDetailFragment"
+        android:name="com.wardrobe.armoire.ui.wardrobe.OutfitDetailFragment"
+        android:label="OutfitDetailFragment" />
 </navigation>

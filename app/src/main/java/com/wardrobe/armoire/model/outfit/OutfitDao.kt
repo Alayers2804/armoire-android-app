@@ -1,6 +1,7 @@
 package com.wardrobe.armoire.model.outfit
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -22,4 +23,8 @@ interface OutfitDao {
     
     @Insert
     fun insert(outfit: OutfitModel)
+
+    @Delete
+    fun delete(outfit: OutfitModel)
+
 }

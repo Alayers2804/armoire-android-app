@@ -1,19 +1,19 @@
 package com.wardrobe.armoire.ui.wardrobe
 
-import com.wardrobe.armoire.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.wardrobe.armoire.R
 import com.wardrobe.armoire.model.wardrobe.CategoryItem
 import com.wardrobe.armoire.model.wardrobe.WardrobeCategory
 import com.wardrobe.armoire.ui.outfit.OutfitAdapter
 
 class CategoryAdapter(
     private val categories: List<WardrobeCategory>,
-    private val onItemClick: (String) -> Unit
+    private val onItemClick: (Any) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     inner class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -29,15 +29,18 @@ class CategoryAdapter(
             titleText.setOnClickListener {
                 onItemClick(category.title)
             }
-            // Check first item type (if any) to decide adapter
             val firstItem = category.items.firstOrNull()
 
             if (firstItem is CategoryItem.Wardrobe) {
-                // Extract WardrobeModel list from CategoryItem.Wardrobe wrapper
                 val wardrobeList =
                     category.items.mapNotNull { (it as? CategoryItem.Wardrobe)?.data }
                 if (wardrobeAdapter == null) {
-                    wardrobeAdapter = WardrobeAdapter(wardrobeList, onItemClick)
+                    wardrobeAdapter = WardrobeAdapter(
+                        dataList = wardrobeList,
+                        onClick = { model -> onItemClick(model) },
+                        isSelectable = false,
+                        isDeletable = false
+                    )
                     innerRecycler.layoutManager = LinearLayoutManager(
                         innerRecycler.context,
                         LinearLayoutManager.HORIZONTAL,
@@ -48,10 +51,13 @@ class CategoryAdapter(
                     wardrobeAdapter?.updateData(wardrobeList)
                 }
             } else if (firstItem is CategoryItem.Outfit) {
-                // Extract OutfitModel list from CategoryItem.Outfit wrapper
                 val outfitList = category.items.mapNotNull { (it as? CategoryItem.Outfit)?.data }
                 if (outfitAdapter == null) {
-                    outfitAdapter = OutfitAdapter(outfitList, onItemClick)
+                    outfitAdapter = OutfitAdapter(
+                        dataList = outfitList,
+                        onClick = { model -> onItemClick(model) }, // pass full OutfitModel
+                        isDeletable = false
+                    )
                     innerRecycler.layoutManager = LinearLayoutManager(
                         innerRecycler.context,
                         LinearLayoutManager.HORIZONTAL,
@@ -61,10 +67,8 @@ class CategoryAdapter(
                 } else {
                     outfitAdapter?.updateData(outfitList)
                 }
-            } else {
-                // Empty or unknown type: clear adapter
-                innerRecycler.adapter = null
             }
+
         }
     }
 

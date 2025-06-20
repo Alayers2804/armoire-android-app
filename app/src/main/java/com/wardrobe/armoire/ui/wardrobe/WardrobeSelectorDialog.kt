@@ -29,13 +29,11 @@ class WardrobeSelectorDialog(
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = WardrobeAdapter(
             wardrobes,
-            onClick = { selectedUid ->
-                wardrobes.find { it.uid == selectedUid }?.let {
-                    if (selectedItems.contains(it)) selectedItems.remove(it)
-                    else selectedItems.add(it)
-                }
+            onClick = { wardrobeItem ->
+                if (selectedItems.contains(wardrobeItem)) selectedItems.remove(wardrobeItem)
+                else selectedItems.add(wardrobeItem)
             },
-            isSelectable = true
+            isSelectable = true,
         )
 
         confirmButton.setOnClickListener {

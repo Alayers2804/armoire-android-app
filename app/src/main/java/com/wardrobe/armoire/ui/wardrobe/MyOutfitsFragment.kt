@@ -2,24 +2,20 @@ package com.wardrobe.armoire.ui.wardrobe
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Base64
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.wardrobe.armoire.R
 import com.wardrobe.armoire.databinding.FragmentMyOutfitsBinding
-import com.wardrobe.armoire.model.api.gpt.GptVisionHelper
-import com.wardrobe.armoire.model.api.gpt.GptVisionResponse
-import com.wardrobe.armoire.model.api.gpt.RetrofitInstance
 import com.wardrobe.armoire.model.wardrobe.WardrobeModel
 import com.wardrobe.armoire.ui.outfit.OutfitAdapter
 import com.wardrobe.armoire.ui.outfit.OutfitViewmodel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MyOutfitsFragment : Fragment() {
 
@@ -48,33 +44,48 @@ class MyOutfitsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = OutfitAdapter(emptyList()) { uid ->
-            Toast.makeText(requireContext(), "Clicked: $uid", Toast.LENGTH_SHORT).show()
-        }
+        adapter = OutfitAdapter(
+            emptyList(),
+            onClick = { outfit ->
+                val bundle = Bundle().apply {
+                    putParcelable("outfit", outfit)
+                }
+                findNavController().navigate(R.id.outfitDetailFragment, bundle)
+            },
+            isDeletable = true,
+            onDelete = { item ->
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Delete Item")
+                    .setMessage("Are you sure you want to delete this wardrobe item?")
+                    .setPositiveButton("Delete") { _, _ ->
+                        outfitViewModel.deleteOutfit(item)
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            }
+        )
 
         binding.buttonAddOutfit.setOnClickListener {
-            wardrobeViewModel.fetchWardrobeByStatus("my_item")
+            AlertDialog.Builder(requireContext())
+                .setTitle("Choose Outfit Creation Mode")
+                .setMessage("How would you like to create your outfit?")
+                .setPositiveButton("Mix and Match Outfit") { _, _ ->
+                    wardrobeViewModel.fetchWardrobeByStatus("my_item")
 
-            val items = wardrobeViewModel.wardrobeMyitems.value ?: emptyList()
-
-            WardrobeSelectorDialog(items) { selectedItems ->
-                binding.buttonAddOutfit.isEnabled = false
-                binding.loadingIndicator.visibility = View.VISIBLE
-
-                outfitViewModel.createOutfitFromWardrobes(requireContext(), selectedItems) { success, message ->
-                    binding.buttonAddOutfit.isEnabled = true
-                    binding.loadingIndicator.visibility = View.GONE // Hide loading
-
-                    if (success) {
-                        Toast.makeText(requireContext(), "Outfit created", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(requireContext(), message ?: "Unknown error", Toast.LENGTH_LONG).show()
-                    }
+                    val allItems = wardrobeViewModel.wardrobeMyitems.value ?: emptyList()
+                    handleOutfitCreation(allItems)
                 }
-            }.show(parentFragmentManager, "wardrobe_selector")
+                .setNegativeButton("Choose Your Own Outfit") { _, _ ->
+                    wardrobeViewModel.fetchWardrobeByStatus("my_item")
+
+                    val items = wardrobeViewModel.wardrobeMyitems.value ?: emptyList()
+
+                    WardrobeSelectorDialog(items) { selectedItems ->
+                        handleOutfitCreation(selectedItems)
+                    }.show(parentFragmentManager, "wardrobe_selector")
+                }
+                .show()
         }
-
-
 
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 2)
@@ -88,6 +99,7 @@ class MyOutfitsFragment : Fragment() {
                     binding.outfitTitle.text = "MyOutfits (${it.size})"
                 }
             }
+
             "my_saved" -> {
                 outfitViewModel.outfitMySaved.observe(viewLifecycleOwner) {
                     adapter.updateData(it)
@@ -104,5 +116,23 @@ class MyOutfitsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun handleOutfitCreation(items: List<WardrobeModel>) {
+        binding.buttonAddOutfit.isEnabled = false
+        binding.loadingIndicator.visibility = View.VISIBLE
+
+        outfitViewModel.createOutfitFromWardrobes(requireContext(), items) { success, message ->
+            binding.buttonAddOutfit.isEnabled = true
+            binding.loadingIndicator.visibility = View.GONE
+
+            if (success) {
+                Toast.makeText(requireContext(), "Outfit created", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), message ?: "Unknown error", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+    }
+
 
 }

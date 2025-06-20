@@ -3,10 +3,12 @@ package com.wardrobe.armoire.ui.authentication
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -75,6 +77,8 @@ class RegisterFragment : Fragment() {
             val maleImage = view.findViewById<ImageView>(R.id.image_male)
             val maleStylesLayout = view.findViewById<LinearLayout>(R.id.layout_styles_men)
             val femaleStylesLayout = view.findViewById<LinearLayout>(R.id.layout_styles_women)
+            val checkboxTos = view.findViewById<CheckBox>(R.id.checkbox_tos)
+
 
             btnRegister.setOnClickListener {
                 name = textinputName.editText?.text.toString().trim()
@@ -84,14 +88,17 @@ class RegisterFragment : Fragment() {
                 when (currentStep) {
                     RegistrationStep.BASIC_INFO -> {
                         if (name.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                            Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
+                        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                            Log.d("Email", "This is $email")
+                            Toast.makeText(context, "Invalid email format", Toast.LENGTH_SHORT).show()
+                        } else if (!checkboxTos.isChecked) {
+                            Toast.makeText(context, "You must agree to the Terms of Service", Toast.LENGTH_SHORT).show()
                         } else {
                             currentStep = RegistrationStep.GENDER
                             showStep(currentStep)
                         }
                     }
-
                     RegistrationStep.GENDER -> {
                         if (selectedGender == null) {
                             Toast.makeText(context, "Please select a gender", Toast.LENGTH_SHORT)

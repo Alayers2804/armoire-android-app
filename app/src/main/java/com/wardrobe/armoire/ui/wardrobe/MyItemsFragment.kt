@@ -4,14 +4,15 @@ import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.wardrobe.armoire.R
 import com.wardrobe.armoire.databinding.FragmentMyItemsBinding
@@ -40,10 +41,24 @@ class MyItemsFragment : Fragment() {
 
         wardrobeAdapter = WardrobeAdapter(
             emptyList(),
-            onClick = { uid ->
-                Toast.makeText(requireContext(), "Clicked item UID: $uid", Toast.LENGTH_SHORT).show()
+            onClick = { selectedItem ->
+                val bundle = bundleOf("wardrobe" to selectedItem)
+                findNavController().navigate(R.id.wardrobeDetailFragment, bundle)
+            },
+            isSelectable = true,
+            isDeletable = true,
+            onDelete = { item ->
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Delete Item")
+                    .setMessage("Are you sure you want to delete this wardrobe item?")
+                    .setPositiveButton("Delete") { _, _ ->
+                        wardrobeViewmodel.deleteWardrobeItem(item)
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
             }
         )
+
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = wardrobeAdapter
@@ -67,11 +82,12 @@ class MyItemsFragment : Fragment() {
         _binding = null
     }
 
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            handleImageSelection(uri)
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                handleImageSelection(uri)
+            }
         }
-    }
 
     private fun handleImageSelection(uri: Uri) {
         val context = requireContext()

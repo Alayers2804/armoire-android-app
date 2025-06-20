@@ -134,6 +134,15 @@ class CartFragment : Fragment() {
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        val checkedItems = cartViewModel.cartItems.value?.filter { it.isChecked } ?: return
+        checkedItems.forEach { item ->
+            cartViewModel.update(item.copy(isChecked = false))
+        }
+    }
 }
 
 

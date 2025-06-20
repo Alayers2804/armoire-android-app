@@ -30,25 +30,15 @@ class CheckoutViewmodel(application: Application) : AndroidViewModel(application
     private val _subtotal = MutableLiveData<Int>()
     val subtotal: LiveData<Int> = _subtotal
 
-    private val _shippingCost = MutableLiveData<Int>().apply { value = 27000 }
+    private val _shippingCost = MutableLiveData<Int>().apply { value = 5000 }
     val shippingCost: LiveData<Int> = _shippingCost
 
-    val total: LiveData<Int> = MediatorLiveData<Int>().apply {
-        addSource(_subtotal) { value = (_subtotal.value ?: 0) + (_shippingCost.value ?: 0) }
-        addSource(_shippingCost) { value = (_subtotal.value ?: 0) + (_shippingCost.value ?: 0) }
-    }
+    private val _isOrderingDone = MutableLiveData<Boolean>()
+    val isOrderingDone: LiveData<Boolean> = _isOrderingDone
 
-    fun loadSelectedCartItems() {
-        viewModelScope.launch {
-            preferences.getUserUid().collect { uid ->
-                if (uid != preferenceDefaultValue) {
-                    cartDao.getCartItems(uid).collect { items ->
-                        _selectedCartItems.postValue(items)
-                        _subtotal.postValue(items.sumOf { it.price })
-                    }
-                }
-            }
-        }
+    val total: LiveData<Int> = MediatorLiveData<Int>().apply {
+        addSource(_subtotal) { value = (_subtotal.value ?: 0) + (_shippingCost.value ?: 5000) }
+        addSource(_shippingCost) { value = (_subtotal.value ?: 0) + (_shippingCost.value ?: 5000) }
     }
 
     fun placeOrder(shippingAddress: String) {
@@ -72,8 +62,16 @@ class CheckoutViewmodel(application: Application) : AndroidViewModel(application
                     }
                     _selectedCartItems.postValue(emptyList())
                     _subtotal.postValue(0)
+                    _isOrderingDone.postValue(true)
                 }
             }
         }
     }
+
+    fun setSelectedItems(items: List<CartModel>) {
+        _selectedCartItems.value = items
+        _subtotal.value = items.sumOf { it.price }
+    }
+
+
 }

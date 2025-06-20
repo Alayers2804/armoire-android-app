@@ -1,58 +1,51 @@
 package com.wardrobe.armoire.ui.wardrobe
 
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.findNavController
 import com.wardrobe.armoire.R
+import com.wardrobe.armoire.databinding.FragmentWardrobeDetailBinding
 import com.wardrobe.armoire.model.wardrobe.WardrobeModel
 import java.io.File
 
-class WardrobeViewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class WardrobeDetailFragment : Fragment() {
 
-    private val imageWardrobe: ImageView = itemView.findViewById(R.id.img_wardrobe)
+    private lateinit var binding: FragmentWardrobeDetailBinding
+    private lateinit var wardrobe: WardrobeModel
 
-
-    fun bind(
-        item: WardrobeModel,
-        isSelected: Boolean,
-        isSelectable: Boolean,
-        onClick: (WardrobeModel) -> Unit,
-        isDeletable: Boolean,
-        onDelete: (WardrobeModel) -> Unit
-    ) {
-        imageWardrobe.loadSmartImage(item.path)
-
-        val container = itemView.findViewById<LinearLayout>(R.id.card_container)
-        container.setBackgroundColor(
-            if (isSelectable && isSelected) Color.LTGRAY else Color.WHITE
-        )
-
-        itemView.setOnClickListener { onClick(item) }
-
-        val deleteButton: ImageView = itemView.findViewById(R.id.deleteButton)
-
-        if (isDeletable) {
-            deleteButton.visibility = View.VISIBLE
-        } else {
-            deleteButton.visibility = View.GONE
-        }
-
-        deleteButton.setOnClickListener {
-            onDelete(item)
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentWardrobeDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        wardrobe = arguments?.getParcelable("wardrobe") ?: return
+
+        binding.imageWardrobe.loadSmartImage(wardrobe.path)
+
+        binding.textDescription.text = wardrobe.description
+
+        binding.buttonBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
 
     fun ImageView.loadSmartImage(path: String, fallbackRes: Int = R.drawable.search_svgrepo_com) {
         val context = this.context
 
         when {
             path.startsWith("/data") || path.startsWith(context.filesDir.absolutePath) -> {
-                // Local file from internal storage
                 val file = File(path)
                 if (file.exists()) {
                     setImageURI(Uri.fromFile(file))
@@ -62,7 +55,6 @@ class WardrobeViewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
 
             path.endsWith(".jpg") || path.endsWith(".png") -> {
-                // Asset image
                 try {
                     val inputStream = context.assets.open(path)
                     val drawable = Drawable.createFromStream(inputStream, null)
@@ -73,7 +65,6 @@ class WardrobeViewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
 
             else -> {
-                // Assume drawable name
                 val resId = context.resources.getIdentifier(path, "drawable", context.packageName)
                 if (resId != 0) {
                     setImageResource(resId)
@@ -83,5 +74,4 @@ class WardrobeViewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
         }
     }
-
 }

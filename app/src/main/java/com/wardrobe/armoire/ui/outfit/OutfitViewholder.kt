@@ -15,10 +15,23 @@ class OutfitViewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val imageOutfit: ImageView = itemView.findViewById(R.id.img_outfit)
     private val txtOutfit: TextView = itemView.findViewById(R.id.txt_outfit)
 
-    fun bind(item: OutfitModel, onClick: (String) -> Unit) {
+    fun bind(item: OutfitModel, onClick: (OutfitModel) -> Unit, isDeletable: Boolean, onDelete: (OutfitModel) -> Unit) {
         imageOutfit.loadSmartImage(item.path)
+
         itemView.setOnClickListener {
-            onClick(item.uid)
+            onClick(item)
+        }
+
+        val deleteButton: ImageView = itemView.findViewById(R.id.deleteButton)
+
+        if (isDeletable){
+            deleteButton.visibility = View.VISIBLE
+        } else {
+            deleteButton.visibility = View.GONE
+        }
+
+        deleteButton.setOnClickListener {
+            onDelete(item)
         }
     }
 

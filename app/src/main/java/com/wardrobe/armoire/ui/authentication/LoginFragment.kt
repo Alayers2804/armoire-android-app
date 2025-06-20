@@ -51,7 +51,7 @@ class LoginFragment : Fragment() {
 
         with(binding) {
             btnLogin.setOnClickListener {
-                val email = textinputUsername.editText?.text.toString()
+                val email = textinputEmail.editText?.text.toString()
                 val password = passwordInput.editText?.text.toString()
 
                 viewLifecycleOwner.lifecycleScope.launch {

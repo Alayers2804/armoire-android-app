@@ -63,8 +63,8 @@ class OutfitViewmodel(application: Application) : AndroidViewModel(application) 
             try {
                 val wardrobe = outfitDao.getOutfitByStatus(status)
                 when (status) {
-                    "my_outfit" -> _outfitMyOutfits.postValue(wardrobe)
-                    "my_saved" -> _outfitMySaved.postValue(wardrobe)
+                    "my_outfit" -> _outfitMyOutfits.postValue(wardrobe.toList())
+                    "my_saved" -> _outfitMySaved.postValue(wardrobe.toList())
                     else -> Log.w("OutfitViewModel", "Unknown status: $status")
                 }
             } catch (e: Exception) {
@@ -150,6 +150,16 @@ class OutfitViewmodel(application: Application) : AndroidViewModel(application) 
                 Log.e("OutfitAPI", "Unexpected error: ${e.message}", e)
                 withContext(Dispatchers.Main) { onResult(false, e.message) }
             }
+        }
+    }
+
+    fun deleteOutfit(outfit: OutfitModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            outfitDao.delete(outfit)
+            val updatedList = outfitDao.getOutfitByStatus("my_outfit").toMutableList().apply {
+                remove(outfit)
+            }
+            _outfitMyOutfits.postValue(updatedList)
         }
     }
 
