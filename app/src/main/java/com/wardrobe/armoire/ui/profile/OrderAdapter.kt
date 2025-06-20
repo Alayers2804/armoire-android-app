@@ -12,7 +12,8 @@ import com.wardrobe.armoire.R
 import com.wardrobe.armoire.model.order.OrderModel
 
 class OrderAdapter(
-    private var orders: List<OrderModel>
+    private var orders: List<OrderModel>,
+    private val onSendClicked: (OrderModel) -> Unit
 ) : RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
 
     inner class OrderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -54,8 +55,9 @@ class OrderAdapter(
             if (order.status.equals("Packing", ignoreCase = true)) View.VISIBLE else View.GONE
 
         holder.button.setOnClickListener {
-            // You can define a callback here if needed
-            Toast.makeText(context, "Sending order: ${order.productName}", Toast.LENGTH_SHORT).show()
+            if (order.status.equals("Packing", ignoreCase = true)) {
+                onSendClicked(order) // 👈 Trigger callback
+            }
         }
     }
 

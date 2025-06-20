@@ -1,7 +1,10 @@
 package com.wardrobe.armoire.model.wardrobe
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WardrobeDao {
@@ -11,4 +14,10 @@ interface WardrobeDao {
 
     @Query("SELECT * FROM wardrobe_clothes")
     fun getAllWardrobe(): List<WardrobeModel>
+
+    @Query("SELECT * FROM wardrobe_clothes WHERE status = :status")
+    fun observeWardrobeByStatus(status: String): Flow<List<WardrobeModel>>
+
+    @Insert
+    fun insert(outfit: WardrobeModel)
 }

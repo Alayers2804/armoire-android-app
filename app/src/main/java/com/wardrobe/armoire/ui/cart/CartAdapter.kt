@@ -34,7 +34,18 @@ class CartAdapter(
         val item = items[position]
         holder.name.text = item.name
         holder.price.text = "Rp${item.price}"
-        // Glide.with(holder.image).load(item.imageUrl).into(holder.image)
+
+        val context = holder.itemView.context
+        val imageResId = context.resources.getIdentifier(
+            item.imageUrl, "drawable", context.packageName
+        )
+
+        if (imageResId != 0) {
+            holder.image.setImageResource(imageResId)
+        } else {
+            holder.image.setImageResource(R.drawable.search_svgrepo_com)
+        }
+
         holder.checkbox.setOnCheckedChangeListener(null) // avoid triggering on recycled views
         holder.checkbox.isChecked = item.isChecked
 

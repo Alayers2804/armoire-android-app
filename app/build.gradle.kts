@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.navigation.dynamic.features.fragment)
     implementation(libs.androidx.room.ktx)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation(libs.gson)
     implementation("androidx.datastore:datastore-preferences:1.1.7")
     implementation("io.jsonwebtoken:jjwt:0.12.6")

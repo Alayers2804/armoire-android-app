@@ -12,10 +12,11 @@
         android:paddingVertical="8dp">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/button"
-            android:contentDescription="Back" />
+            android:id="@+id/back_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="Back"
+            android:src="@drawable/button" />
 
         <TextView
             android:layout_width="wrap_content"

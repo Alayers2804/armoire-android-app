@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -90,12 +93,19 @@ class CartFragment : Fragment() {
             }
         }
 
+        val backButton = view.findViewById<ImageView>(R.id.back_button)
+        backButton.setOnClickListener {
+            getParentFragmentManager().popBackStack();
+        }
+
     }
 
     private fun setupObservers() {
         val textItemCount = view?.findViewById<TextView>(R.id.text_item_count)
         val textTotal = view?.findViewById<TextView>(R.id.text_total)
         val buttonClearAll = view?.findViewById<Button>(R.id.button_clear_all)
+        val checkboxAll = view?.findViewById<CheckBox>(R.id.checkbox_all)
+
 
         cartViewModel.cartItems.observe(viewLifecycleOwner) { cartList ->
             cartAdapter.submitList(cartList)
@@ -105,19 +115,25 @@ class CartFragment : Fragment() {
             val totalPrice = selectedItems.sumOf { it.price }
             textTotal?.text = "Total Rp${String.format("%,d", totalPrice)}"
 
-            // Update button text and visibility
             buttonClearAll?.apply {
                 visibility = if (cartList.isEmpty()) View.GONE else View.VISIBLE
                 text = if (selectedItems.isNotEmpty()) {
-                    "Remove Selected (${selectedItems.size})"
+                    "Clear"
                 } else {
                     "Clear All"
                 }
             }
+
+            checkboxAll?.apply {
+                setOnCheckedChangeListener(null) // Avoid infinite loop
+                isChecked = selectedItems.size == cartList.size && cartList.isNotEmpty()
+                setOnCheckedChangeListener { _, isChecked ->
+                    val updatedList = cartList.map { it.copy(isChecked = isChecked) }
+                    updatedList.forEach { cartViewModel.update(it) }
+                }
+            }
         }
     }
-
-
 }
 
 

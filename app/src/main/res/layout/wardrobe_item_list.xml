@@ -1,7 +1,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="160dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:elevation="4dp"
@@ -10,27 +10,28 @@
     app:cardElevation="4dp">
 
     <LinearLayout
+        android:id="@+id/card_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="8dp"
-        android:gravity="center_horizontal">
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/img_wardrobe"
+            tools:src="@drawable/menu_svgrepo_com"
             android:layout_width="112dp"
             android:layout_height="121dp"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/menu_svgrepo_com" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/txt_wardrobe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Last used: 1 days ago"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

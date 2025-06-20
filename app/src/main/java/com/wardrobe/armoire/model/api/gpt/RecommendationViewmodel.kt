@@ -10,7 +10,6 @@ import com.google.gson.Gson
 import com.wardrobe.armoire.AppDatabase
 import com.wardrobe.armoire.model.outfit.OutfitModel
 import com.wardrobe.armoire.model.shop.ShopModel
-import com.wardrobe.armoire.model.user.UserModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -54,7 +53,7 @@ class RecommendationViewmodel(application: Application) : AndroidViewModel(appli
     fun fetchOutfitRecommendations(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val user = userDao.getUserById(userId) ?: return@launch
-            val outfits = outfitDao.getAllWardrobe()
+            val outfits = outfitDao.getAllOutfit()
 
             val response = ApiConfig.getOutfitRecommendation(user, outfits)
             val recommended = Gson().fromJson(response, OutfitRecommendation::class.java)

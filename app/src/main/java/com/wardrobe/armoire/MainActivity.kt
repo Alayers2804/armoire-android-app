@@ -1,6 +1,6 @@
 package com.wardrobe.armoire
 
-import android.content.BroadcastReceiver
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -34,9 +34,7 @@ class MainActivity : AppCompatActivity() {
         binding.menuNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.btn_my_wardrobe -> {
-                    if (navController.currentDestination?.id != R.id.wardrobeFragment) {
-                        navController.navigate(R.id.wardrobeFragment)
-                    }
+                    navController.navigate(R.id.wardrobeFragment)
                     true
                 }
 
@@ -61,12 +59,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @Suppress("MissingSuperCall")
     override fun onBackPressed() {
-        // Only exit if we are on the start destination (e.g., wardrobeFragment)
-        if (navController.currentDestination?.id == navController.graph.startDestinationId) {
-            finishAffinity() // Exits the app
-        } else {
-            super.onBackPressed()
-        }
+        AlertDialog.Builder(this)
+            .setTitle("Exit App")
+            .setMessage("Are you sure you want to exit?")
+            .setPositiveButton("Yes") { _, _ ->
+                finishAffinity() // Exits the app completely
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
 }

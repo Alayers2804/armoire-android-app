@@ -1,6 +1,7 @@
 package com.wardrobe.armoire.ui.wardrobe
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +45,11 @@ class WardrobeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        wardrobeViewmodel.observeWardrobeByStatus("my_item")
+        wardrobeViewmodel.observeWardrobeByStatus("my_preloved")
+        outfitViewmodel.observeWardrobeByStatus("my_outfit")
+        outfitViewmodel.observeWardrobeByStatus("my_saved")
+
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val bottomInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
             binding.recyclerView.setPadding(
@@ -61,21 +67,7 @@ class WardrobeFragment : Fragment() {
 
         binding.recyclerView.setPadding(0, 0, 0, bottomNavHeight)
 
-        fun updateCombinedCategories() {
-            val combined = mutableListOf<WardrobeCategory>()
 
-            val wardrobeItems = wardrobeViewmodel.wardrobeMyitems.value?.map { CategoryItem.Wardrobe(it) } ?: emptyList()
-            val wardrobePreloved = wardrobeViewmodel.wardrobeMyPreloved.value?.map { CategoryItem.Wardrobe(it) } ?: emptyList()
-            val outfitItems = outfitViewmodel.outfitMyOutfits.value?.map { CategoryItem.Outfit(it) } ?: emptyList()
-            val outfitSaved = outfitViewmodel.outfitMySaved.value?.map { CategoryItem.Outfit(it) } ?: emptyList()
-
-            combined.add(WardrobeCategory("My Wardrobe", wardrobeItems))
-            combined.add(WardrobeCategory("My Preloved", wardrobePreloved))
-            combined.add(WardrobeCategory("My Outfits", outfitItems))
-            combined.add(WardrobeCategory("My Saved", outfitSaved))
-
-            combinedCategories.value = combined
-        }
 
         wardrobeViewmodel.wardrobeMyitems.observe(viewLifecycleOwner) { updateCombinedCategories() }
         wardrobeViewmodel.wardrobeMyPreloved.observe(viewLifecycleOwner) { updateCombinedCategories() }
@@ -110,18 +102,21 @@ class WardrobeFragment : Fragment() {
             }
         }
 
-        // Fetch data
-        wardrobeViewmodel.fetchWardrobeByStatus("my_item")
-        wardrobeViewmodel.fetchWardrobeByStatus("my_preloved")
-        outfitViewmodel.fetchOutfitByStatus("my_outfit")
-        outfitViewmodel.fetchOutfitByStatus("my_saved")
     }
 
-    override fun onResume() {
-        super.onResume()
-        wardrobeViewmodel.fetchWardrobeByStatus("my_item")
-        wardrobeViewmodel.fetchWardrobeByStatus("my_preloved")
-        outfitViewmodel.fetchOutfitByStatus("my_outfit")
-        outfitViewmodel.fetchOutfitByStatus("my_saved")
+    fun updateCombinedCategories() {
+        val combined = mutableListOf<WardrobeCategory>()
+
+        val wardrobeItems = wardrobeViewmodel.wardrobeMyitems.value?.map { CategoryItem.Wardrobe(it) } ?: emptyList()
+        val wardrobePreloved = wardrobeViewmodel.wardrobeMyPreloved.value?.map { CategoryItem.Wardrobe(it) } ?: emptyList()
+        val outfitItems = outfitViewmodel.outfitMyOutfits.value?.map { CategoryItem.Outfit(it) } ?: emptyList()
+        val outfitSaved = outfitViewmodel.outfitMySaved.value?.map { CategoryItem.Outfit(it) } ?: emptyList()
+
+        combined.add(WardrobeCategory("My Wardrobe", wardrobeItems))
+        combined.add(WardrobeCategory("My Preloved", wardrobePreloved))
+        combined.add(WardrobeCategory("My Outfits", outfitItems))
+        combined.add(WardrobeCategory("My Saved", outfitSaved))
+
+        combinedCategories.value = combined
     }
 }

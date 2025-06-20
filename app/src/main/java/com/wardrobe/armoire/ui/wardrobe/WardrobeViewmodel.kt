@@ -56,4 +56,22 @@ class WardrobeViewmodel(application: Application): AndroidViewModel(application)
             }
         }
     }
+
+    fun observeWardrobeByStatus(status: String) {
+        viewModelScope.launch {
+            wardrobeDao.observeWardrobeByStatus(status).collect { wardrobe ->
+                when (status) {
+                    "my_item" -> _wardrobeMyItems.postValue(wardrobe)
+                    "my_preloved" -> _wardrobeMyPreloved.postValue(wardrobe)
+                }
+            }
+        }
+    }
+
+    fun insertWardrobeItem(item: WardrobeModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            wardrobeDao.insert(item)
+            fetchWardrobeByStatus("my_item") // Refresh list
+        }
+    }
 }

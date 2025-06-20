@@ -28,10 +28,4 @@ class GptVisionHelper {
         )
     }
 
-    fun convertImageToBase64(imageUri: Uri, context: Context): String {
-        val inputStream = context.contentResolver.openInputStream(imageUri)
-        val bytes = inputStream?.readBytes() ?: return ""
-        return Base64.encodeToString(bytes, Base64.NO_WRAP)
-    }
-
 }

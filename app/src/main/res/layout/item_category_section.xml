@@ -2,11 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_category_section"
     android:orientation="vertical"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true">
 
     <TextView
+        android:paddingStart="8dp"
         android:id="@+id/txt_category_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

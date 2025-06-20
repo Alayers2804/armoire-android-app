@@ -20,3 +20,11 @@ data class ImageUrl(
     val url: String,
     val detail: String = "high"
 )
+
+data class DalleRequest(
+    val model: String = "dall-e-3",
+    val prompt: String,
+    val n: Int = 1,
+    val size: String = "1024x1024"
+)
+

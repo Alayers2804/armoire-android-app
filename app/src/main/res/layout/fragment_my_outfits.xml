@@ -1,46 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
+    <!-- Main Content -->
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/outfitTitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="MyOutfits"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_weight="1" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Add" />
+            <TextView
+                android:id="@+id/outfitTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MyOutfits"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_weight="1" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_setting"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Sort" />
+            <ImageButton
+                android:id="@+id/button_add_outfit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Add" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_setting"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Sort" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:scrollbars="vertical" />
-</LinearLayout>
+    <!-- Progress Indicator -->
+    <ProgressBar
+        android:id="@+id/loadingIndicator"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+</FrameLayout>

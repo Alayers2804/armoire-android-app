@@ -8,8 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wardrobe.armoire.AppDatabase
 import com.wardrobe.armoire.model.outfit.OutfitModel
-import com.wardrobe.armoire.model.wardrobe.CategoryItem
-import com.wardrobe.armoire.model.wardrobe.WardrobeCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,7 +21,7 @@ class BrowseViewmodel(application: Application) : AndroidViewModel(application) 
     fun getWardrobeByStyle(style: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val wardrobe = outfitDao.getWardrobeByStyle(style)
+                val wardrobe = outfitDao.getOutfitByStyle(style)
                 _outfitBrowser.postValue(wardrobe)
             } catch (e: Exception) {
                 Log.e("OutfitViewModel", "Error fetching outfit for status: $style", e)
@@ -34,7 +32,7 @@ class BrowseViewmodel(application: Application) : AndroidViewModel(application) 
     fun getAllWardrobe(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val wardrobe = outfitDao.getAllWardrobe()
+                val wardrobe = outfitDao.getAllOutfit()
                 _outfitBrowser.postValue(wardrobe)
             } catch (e: Exception) {
                 Log.e("OutfitViewModel", "Error fetching outfit", e)

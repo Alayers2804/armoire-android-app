@@ -26,6 +26,9 @@ class CategoryAdapter(
         fun bind(category: WardrobeCategory) {
             titleText.text = category.title
 
+            titleText.setOnClickListener {
+                onItemClick(category.title)
+            }
             // Check first item type (if any) to decide adapter
             val firstItem = category.items.firstOrNull()
 
