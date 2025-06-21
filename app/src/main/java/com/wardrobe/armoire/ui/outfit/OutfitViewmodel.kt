@@ -113,21 +113,6 @@ class OutfitViewmodel(application: Application) : AndroidViewModel(application) 
 
                 val imageFile = ImageUtils.downloadAndSaveImage(context, dalleResponse)
 
-                val imageBytes = imageFile.readBytes()
-
-                val isVerified = OutfitService.verifyOutfitImageWithGpt(
-                    imageBytes,
-                    outfitDetails.description,
-                    outfitDetails.style
-                )
-
-                if (!isVerified) {
-                    withContext(Dispatchers.Main) {
-                        onResult(false, "Generated image does not match expected style/description.")
-                    }
-                    return@launch
-                }
-
                 val newOutfit = OutfitModel(
                     path = imageFile.absolutePath,
                     description = outfitDetails.description,
